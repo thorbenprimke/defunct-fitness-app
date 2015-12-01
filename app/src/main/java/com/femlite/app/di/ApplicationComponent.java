@@ -4,9 +4,13 @@ import android.app.Application;
 import android.content.Context;
 import android.content.res.Resources;
 
+import com.femlite.app.network.FbbdService;
+
+import javax.inject.Scope;
 import javax.inject.Singleton;
 
 import dagger.Component;
+import dagger.Module;
 
 /**
  * The component that lives for the entire life of an application.
@@ -16,7 +20,7 @@ import dagger.Component;
  * be available to sub-graphs / other scopes, they need to be exposed within the component.
  */
 @Singleton
-@Component(modules = { ApplicationModule.class })
+@Component(modules = { ApplicationModule.class, ApiModule.class })
 public interface ApplicationComponent {
 
     // Any provided classes that should be exposed to sub-graphs, need to be added here.
@@ -25,4 +29,6 @@ public interface ApplicationComponent {
     Application application();
 
     Resources resources();
+
+    FbbdService fbbdService();
 }
