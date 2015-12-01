@@ -11,7 +11,7 @@ import com.femlite.app.di.DaggerActivityComponent;
 import com.femlite.app.di.HasComponent;
 
 /**
- * Created by thorben2 on 12/1/15.
+ * Base activity for any femlite activities
  */
 public abstract class FemliteActivity extends AppCompatActivity
         implements HasComponent<ActivityComponent> {
