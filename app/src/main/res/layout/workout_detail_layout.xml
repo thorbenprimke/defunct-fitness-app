@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="workout"
+            type="com.femlite.app.viewmodel.WorkoutViewModel" />
+    </data>
+
+    <!-- my old layout is here, but omitted for clarity -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="180dp">
+
+                <VideoView
+                    android:id="@+id/video"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    />
+
+                <ImageView
+                    android:id="@+id/video_placeholder_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:coverUrl="@{workout.videoPlaceholderPhotoUrl}"/>
+
+                <FrameLayout
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_centerInParent="true">
+
+                    <ProgressBar
+                        android:id="@+id/download_progress"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:max="100"
+                        android:rotation="-90"
+                        android:indeterminate="false"
+                        android:progress="0"
+                        android:progressDrawable="@drawable/circle_progress_foreground_detail_load" />
+
+                    <ImageView
+                        android:id="@+id/playback_control"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_play_active"/>
+                </FrameLayout>
+
+                <View
+                    android:id="@+id/video_overlay"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    />
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/workout_detail_influencer_image"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="140dp"
+                android:layout_gravity="center_horizontal"
+                app:squareUrl="@{workout.photoUrl}"/>
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/workout_detail_influencer_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:textColor="#4A4A4A"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:text="@{workout.influencer}"
+            />
+
+        <TextView
+            android:id="@+id/workout_detail_title"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:textColor="#4A4A4A"
+            android:textSize="16sp"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:id="@+id/workout_detail_exercise_time"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:textColor="#4A4A4A"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/workout_detail_exercise_count"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:textColor="#4A4A4A"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/workout_detail_exercise_calorie"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:textColor="#4A4A4A"
+                android:textSize="12sp"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/workout_detail_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="30dp"
+            android:textColor="#4A4A4A"
+            android:textSize="10sp"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp">
+
+            <Button
+                android:id="@+id/workout_detail_exercises_button"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_weight="1"
+                android:layout_marginRight="10dp"
+                android:background="#E91E63"
+                android:text="View exercises"
+                android:textColor="@color/white"
+                android:textAllCaps="true"
+                />
+
+            <Button
+                android:id="@+id/workout_detail_start_workout_button"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="10dp"
+                android:background="#E91E63"
+                android:text="Start workout"
+                android:textColor="@color/white"
+                android:textAllCaps="true"
+                />
+        </LinearLayout>
+    </LinearLayout>
+</layout>
