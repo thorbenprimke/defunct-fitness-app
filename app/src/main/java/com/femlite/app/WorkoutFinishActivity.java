@@ -1,8 +1,6 @@
 package com.femlite.app;
 
 import android.content.Intent;
-import android.databinding.Bindable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -11,7 +9,6 @@ import com.femlite.app.model.parse.ParseWorkout;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -62,7 +59,7 @@ public class WorkoutFinishActivity extends FemliteActivity {
                 new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
-                        Intent intent = new Intent(WorkoutFinishActivity.this, MainActivity.class);
+                        Intent intent = new Intent(WorkoutFinishActivity.this, WorkoutListActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                     }

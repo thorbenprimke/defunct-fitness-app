@@ -2,7 +2,6 @@ package com.femlite.app;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import com.femlite.app.model.Workout;
@@ -60,7 +59,7 @@ public class ExerciseListActivity extends FemliteActivity {
                 new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
-                        Intent intent = new Intent(ExerciseListActivity.this, MainActivity.class);
+                        Intent intent = new Intent(ExerciseListActivity.this, WorkoutListActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                     }

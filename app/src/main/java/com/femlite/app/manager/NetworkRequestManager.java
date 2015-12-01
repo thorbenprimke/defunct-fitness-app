@@ -36,7 +36,7 @@ public class NetworkRequestManager {
 
 //                (workouts, error) -> {
 //                    if (workouts == null) {
-//                        Toast.makeText(MainActivity.this, "failed to load workouts", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(WorkoutListActivity.this, "failed to load workouts", Toast.LENGTH_SHORT).show();
 //                        return;
 //                    }
 //                    adapter.addItems(workouts);
