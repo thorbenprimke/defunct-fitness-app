@@ -2,32 +2,27 @@ package com.femlite.app;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.facebook.share.model.ShareOpenGraphAction;
+import com.femlite.app.manager.DataManager;
+import com.femlite.app.manager.UiStorageHelper;
 import com.femlite.app.model.parse.ParseWorkout;
+import com.femlite.app.model.realm.RealmWorkout;
 import com.femlite.app.views.WorkoutItemView;
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
-import com.parse.ParseQueryAdapter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import jp.wasabeef.glide.transformations.CropCircleTransformation;
+import io.realm.RealmResults;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class MainActivity extends FemliteActivity {
@@ -37,11 +32,19 @@ public class MainActivity extends FemliteActivity {
 
     private Adapter adapter;
 
+    @Inject
+    DataManager dataManager;
+
+    @Inject
+    UiStorageHelper uiStorageHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        getComponent().inject(this);
+        uiStorageHelper.onCreate();
 
         adapter = new Adapter();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -51,17 +54,17 @@ public class MainActivity extends FemliteActivity {
 //        testObject.put("foo", "bar");
 //        testObject.saveInBackground();
 
-
-        ParseQuery<ParseWorkout> parseQuery = ParseQuery.getQuery(ParseWorkout.class);
-        parseQuery = parseQuery.orderByAscending("name");
-        parseQuery.findInBackground(
-                (workouts, error) -> {
-                    if (workouts == null) {
+        dataManager.getWorkouts(
+                fetched -> {
+                    if (fetched) {
+                        RealmResults<RealmWorkout> workouts = uiStorageHelper.getWorkouts();
+                        adapter.addItems(workouts);
+                    } else {
                         Toast.makeText(MainActivity.this, "failed to load workouts", Toast.LENGTH_SHORT).show();
-                        return;
                     }
-                    adapter.addItems(workouts);
-                });
+                },
+                throwable -> Toast.makeText(MainActivity.this, "failed to load workouts", Toast.LENGTH_SHORT).show());
+
 
 //        final ParseQueryAdapter<Pa> adapterParse =
 //                new ParseQueryAdapter<ParseObject>(this, new ParseQueryAdapter.QueryFactory<ParseObject>() {
@@ -96,8 +99,9 @@ public class MainActivity extends FemliteActivity {
     }
 
     @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    protected void onDestroy() {
+        super.onDestroy();
+        uiStorageHelper.onDestroy();
     }
 
     public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
@@ -112,7 +116,7 @@ public class MainActivity extends FemliteActivity {
             }
         }
 
-        private List<ParseWorkout> items;
+        private List<RealmWorkout> items;
 
         public Adapter() {
             items = new ArrayList<>();
@@ -132,7 +136,7 @@ public class MainActivity extends FemliteActivity {
                         public void onClick(View v) {
                             Intent intent =
                                     new Intent(MainActivity.this, WorkoutDetailActivity.class);
-                            intent.putExtra("workoutId", items.get(position).getObjectId());
+                            intent.putExtra("workoutId", items.get(position).getId());
                             startActivity(intent);
                         }
                     }
@@ -144,8 +148,8 @@ public class MainActivity extends FemliteActivity {
             return items.size();
         }
 
-        public void addItems(List<ParseWorkout> objects) {
-            this.items.addAll(objects);
+        public void addItems(RealmResults<RealmWorkout> workouts) {
+            this.items = workouts;
             notifyDataSetChanged();
         }
     }

@@ -1,5 +1,12 @@
 package com.femlite.app.manager;
 
+import com.femlite.app.model.Workout;
+import com.parse.ParseException;
+
+import java.util.List;
+
+import javax.inject.Inject;
+
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -21,20 +28,44 @@ public class DataManager {
         }
     }
 
-    public DataManager() {
+    private final NetworkRequestManager networkRequestManager;
+    private final StorageManager storageManager;
 
+    @Inject
+    public DataManager(
+            NetworkRequestManager networkRequestManager,
+            StorageManager storageManager) {
+        this.networkRequestManager = networkRequestManager;
+        this.storageManager = storageManager;
     }
 
     public Subscription getWorkouts(
-            String url,
-            Action1<ProgressUpdate> onNext,
+            Action1<Boolean> onNext,
             Action1<Throwable> onError) {
         return Observable
-                .create((Observable.OnSubscribe<ProgressUpdate>) subscriber -> {
+                .create((Observable.OnSubscribe<Boolean>) subscriber -> {
 
+                    if (storageManager.hasWorkouts()) {
+                        subscriber.onNext(true);
+                        subscriber.onCompleted();
+                        return;
+                    }
 
+                    List<Workout> workouts = null;
+                    try {
+                        workouts = networkRequestManager.fetchWorkouts();
+                    } catch (ParseException e) {
+                        subscriber.onError(e);
+                    }
 
-                    subscriber.onNext(new ProgressUpdate(false, 50));
+                    if (workouts == null) {
+                        subscriber.onNext(false);
+                        subscriber.onCompleted();
+                        return;
+                    }
+
+                    storageManager.storeWorkouts(workouts);
+                    subscriber.onNext(true);
                     subscriber.onCompleted();
                 })
                 .subscribeOn(Schedulers.io())

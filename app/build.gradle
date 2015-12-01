@@ -68,7 +68,7 @@ dependencies {
     compile project(':ParseUI-Login')
     compile project(':ParseUI-Widget')
 
-    compile 'io.realm:realm-android:0.84.2'
+    compile 'io.realm:realm-android:0.85.1'
 
 // Uncomment if using Facebook Login (optional Maven dependency)
     compile 'com.facebook.android:facebook-android-sdk:4.6.0'

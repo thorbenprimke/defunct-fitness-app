@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.femlite.app.R;
+import com.femlite.app.model.Workout;
 import com.femlite.app.model.parse.ParseWorkout;
 
 import butterknife.Bind;
@@ -55,11 +56,11 @@ public class WorkoutItemView extends RelativeLayout {
 //        binding = WorkoutDetailLayoutBinding.bind(this);
     }
 
-    public void bind(ParseWorkout parseWorkout) {
+    public void bind(Workout parseWorkout) {
 
         final String titleStr = parseWorkout.getTitle();
-        final String type = parseWorkout.getType();
-        title.setText("\"" + titleStr + "\" " + type);
+//        final String type = parseWorkout.getType();
+        title.setText("\"" + titleStr /*+ "\" " + type*/);
         subtitle.setText("By " + parseWorkout.getInfluencer());
 
         Glide.with(getContext())
@@ -67,7 +68,7 @@ public class WorkoutItemView extends RelativeLayout {
                 .bitmapTransform(new CropCircleTransformation(getContext()))
                 .into(image);
 
-        final boolean featured = parseWorkout.getBoolean("Featured");
+        final boolean featured = false; //parseWorkout.getBoolean("Featured");
         featuredLabel.setVisibility(featured ? View.VISIBLE : View.GONE);
 
         favorite.setImageResource(featured ?

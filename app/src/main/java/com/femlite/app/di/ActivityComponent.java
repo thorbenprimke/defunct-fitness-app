@@ -2,6 +2,8 @@ package com.femlite.app.di;
 
 import android.app.Activity;
 
+import com.femlite.app.MainActivity;
+
 import dagger.Component;
 
 /**
@@ -19,4 +21,6 @@ import dagger.Component;
 public interface ActivityComponent extends ApplicationComponent {
 
     Activity activity();
+
+    void inject(MainActivity mainActivity);
 }
