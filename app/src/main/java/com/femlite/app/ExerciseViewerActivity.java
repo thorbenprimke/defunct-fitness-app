@@ -10,7 +10,7 @@ import java.io.File;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class ExerciseViewerActivity extends AppCompatActivity {
+public class ExerciseViewerActivity extends FemliteActivity {
 
     @Bind(R.id.video)
     VideoView videoView;

@@ -19,7 +19,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ExerciseListActivity extends AppCompatActivity {
+public class ExerciseListActivity extends FemliteActivity {
 
     private String workoutId;
     private Workout workout;

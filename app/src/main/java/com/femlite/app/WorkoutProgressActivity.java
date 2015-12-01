@@ -29,7 +29,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class WorkoutProgressActivity extends AppCompatActivity {
+public class WorkoutProgressActivity extends FemliteActivity {
 
     private static final float DURATION_SEC = 5.f;
 

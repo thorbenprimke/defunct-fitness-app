@@ -21,7 +21,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class WorkoutFinishActivity extends AppCompatActivity {
+public class WorkoutFinishActivity extends FemliteActivity {
 
     private String workoutId;
     private Workout workout;

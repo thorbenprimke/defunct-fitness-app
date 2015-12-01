@@ -2,6 +2,10 @@ package com.femlite.app;
 
 import android.app.Application;
 
+import com.femlite.app.di.ApplicationComponent;
+import com.femlite.app.di.ApplicationModule;
+import com.femlite.app.di.DaggerApplicationComponent;
+import com.femlite.app.di.HasComponent;
 import com.femlite.app.model.parse.ParseExercise;
 import com.femlite.app.model.parse.ParseWorkout;
 import com.parse.Parse;
@@ -13,11 +17,15 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 /**
  * Created by thorben on 11/2/15.
  */
-public class FemliteApplication extends Application {
+public class FemliteApplication extends Application implements HasComponent<ApplicationComponent> {
+
+    private ApplicationComponent applicationComponent;
 
     @Override
     public void onCreate() {
         super.onCreate();
+
+        initializeComponent();
 
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
                         .setDefaultFontPath("fonts/Roboto-Bold.ttf")
@@ -36,5 +44,26 @@ public class FemliteApplication extends Application {
         Parse.setLogLevel(Parse.LOG_LEVEL_DEBUG);
 
         ParseFacebookUtils.initialize(this);
+    }
+
+    // ================================================================================
+    // Dependency Injection
+    // ================================================================================
+    private void initializeComponent() {
+        if (applicationComponent != null) {
+            return;
+        }
+        applicationComponent = DaggerApplicationComponent.builder()
+                .applicationModule(new ApplicationModule(this))
+                .build();
+    }
+
+    public void setApplicationComponent(ApplicationComponent applicationComponent) {
+        this.applicationComponent = applicationComponent;
+    }
+
+    @Override
+    public ApplicationComponent getComponent() {
+        return applicationComponent;
     }
 }

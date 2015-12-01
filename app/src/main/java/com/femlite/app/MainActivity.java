@@ -30,7 +30,7 @@ import butterknife.ButterKnife;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends FemliteActivity {
 
     @Bind(R.id.workout_recycler_view)
     RecyclerView recyclerView;

@@ -7,6 +7,6 @@ import retrofit.http.GET;
  */
 public interface FbbdService {
 
-    @GET("/api/v14/search/item.xml")
-    String
+//    @GET("/api/v14/search/item.xml")
+//    String
 }

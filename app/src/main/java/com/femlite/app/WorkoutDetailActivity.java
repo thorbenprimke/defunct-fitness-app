@@ -33,7 +33,7 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class WorkoutDetailActivity extends AppCompatActivity {
+public class WorkoutDetailActivity extends FemliteActivity {
 
     @Bind(R.id.workout_detail_title)
     TextView title;
