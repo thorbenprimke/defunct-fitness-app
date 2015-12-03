@@ -55,6 +55,7 @@ dependencies {
         exclude module: 'stax-api'
         exclude module: 'xpp3'
     }
+    compile 'com.squareup.okhttp:logging-interceptor:2.6.0'
 
     compile 'com.github.thorbenprimke:realm-recyclerview:0.9.7'
 

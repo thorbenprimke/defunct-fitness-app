@@ -19,12 +19,10 @@ import io.realm.RealmBasedRecyclerViewAdapter;
 import io.realm.RealmResults;
 import io.realm.RealmViewHolder;
 
-public class WorkoutListActivity extends FemliteActivity {
+public class WorkoutListActivity extends FemliteDrawerActivity {
 
     @Bind(R.id.workout_recycler_view)
     RealmRecyclerView recyclerView;
-
-    private Adapter adapter;
 
     @Inject
     DataManager dataManager;
@@ -32,10 +30,11 @@ public class WorkoutListActivity extends FemliteActivity {
     @Inject
     UiStorageHelper uiStorageHelper;
 
+    private Adapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         getComponent().inject(this);
         uiStorageHelper.onCreate();
@@ -59,6 +58,11 @@ public class WorkoutListActivity extends FemliteActivity {
                         WorkoutListActivity.this,
                         "failed to load workouts",
                         Toast.LENGTH_SHORT).show());
+    }
+
+    @Override
+    public int getContentLayoutResId() {
+        return R.layout.workout_list_layout;
     }
 
     @Override
