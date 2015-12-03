@@ -70,6 +70,10 @@
         <activity
             android:name=".FemliteDrawerActivity"
             android:label="@string/title_activity_main2"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".CalorieTrackerOverviewActivity"
+            android:label="@string/title_activity_calorie_tracker_overview"
             android:theme="@style/AppTheme"></activity>
     </application>
 
