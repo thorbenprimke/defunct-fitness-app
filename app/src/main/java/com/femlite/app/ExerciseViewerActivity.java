@@ -2,7 +2,6 @@ package com.femlite.app;
 
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.VideoView;
 
 import java.io.File;
@@ -10,7 +9,7 @@ import java.io.File;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class ExerciseViewerActivity extends FemliteActivity {
+public class ExerciseViewerActivity extends FemliteBaseActivity {
 
     @Bind(R.id.video)
     VideoView videoView;

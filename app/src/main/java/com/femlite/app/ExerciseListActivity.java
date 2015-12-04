@@ -18,7 +18,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ExerciseListActivity extends FemliteActivity {
+public class ExerciseListActivity extends FemliteBaseActivity {
 
     private String workoutId;
     private Workout workout;
@@ -59,7 +59,7 @@ public class ExerciseListActivity extends FemliteActivity {
                 new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
-                        Intent intent = new Intent(ExerciseListActivity.this, WorkoutListActivity.class);
+                        Intent intent = new Intent(ExerciseListActivity.this, WorkoutMainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                     }

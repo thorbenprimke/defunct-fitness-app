@@ -14,6 +14,8 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import retrofit.Retrofit;
+import retrofit.RxJavaCallAdapterFactory;
+import retrofit.SimpleXmlConverterFactory;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
@@ -62,8 +64,10 @@ public class ApiBaseModule {
     @Named("FbbdRetrofit")
     Retrofit provideRetrofit(OkHttpClient client) {
         Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl("http://api.fbbd.com")
-                .client(client);
+                .baseUrl("http://fddb.info/api/v14/")
+                .client(client)
+                .addConverterFactory(SimpleXmlConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create());
 //        if (ApplicationInfo.isNonProduction()) {
 //            builder = builder.setLogLevel(RestAdapter.LogLevel.FULL);
 //        }

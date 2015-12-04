@@ -3,7 +3,6 @@ package com.femlite.app;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -33,7 +32,7 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class WorkoutDetailActivity extends FemliteActivity {
+public class WorkoutDetailActivity extends FemliteBaseActivity {
 
     @Bind(R.id.workout_detail_title)
     TextView title;

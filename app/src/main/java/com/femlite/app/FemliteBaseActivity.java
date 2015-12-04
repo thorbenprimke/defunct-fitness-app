@@ -18,7 +18,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 /**
  * Base activity for any femlite activities
  */
-public abstract class FemliteActivity extends AppCompatActivity
+public abstract class FemliteBaseActivity extends AppCompatActivity
         implements HasComponent<ActivityComponent> {
 
     private ActivityComponent activityComponent;

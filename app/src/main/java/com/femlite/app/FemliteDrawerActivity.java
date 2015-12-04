@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.parse.ParseUser;
 
-public abstract class FemliteDrawerActivity extends FemliteActivity
+public abstract class FemliteDrawerActivity extends FemliteBaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     @Override
@@ -81,14 +81,14 @@ public abstract class FemliteDrawerActivity extends FemliteActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_workout && !(this instanceof WorkoutListActivity)) {
+        if (id == R.id.nav_workout && !(this instanceof WorkoutMainActivity)) {
             Intent intent =
-                    new Intent(FemliteDrawerActivity.this, WorkoutListActivity.class);
+                    new Intent(FemliteDrawerActivity.this, WorkoutMainActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_calorie_tracker
-                && !(this instanceof CalorieTrackerOverviewActivity)) {
+                && !(this instanceof FoodTrackerMainActivity)) {
             Intent intent =
-                    new Intent(FemliteDrawerActivity.this, CalorieTrackerOverviewActivity.class);
+                    new Intent(FemliteDrawerActivity.this, FoodTrackerMainActivity.class);
             startActivity(intent);
         }
 

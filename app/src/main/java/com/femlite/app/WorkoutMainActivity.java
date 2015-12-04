@@ -19,7 +19,7 @@ import io.realm.RealmBasedRecyclerViewAdapter;
 import io.realm.RealmResults;
 import io.realm.RealmViewHolder;
 
-public class WorkoutListActivity extends FemliteDrawerActivity {
+public class WorkoutMainActivity extends FemliteDrawerActivity {
 
     @Bind(R.id.workout_recycler_view)
     RealmRecyclerView recyclerView;
@@ -49,13 +49,13 @@ public class WorkoutListActivity extends FemliteDrawerActivity {
                         adapter.updateRealmResults(workouts);
                     } else {
                         Toast.makeText(
-                                WorkoutListActivity.this,
+                                WorkoutMainActivity.this,
                                 "failed to load workouts",
                                 Toast.LENGTH_SHORT).show();
                     }
                 },
                 throwable -> Toast.makeText(
-                        WorkoutListActivity.this,
+                        WorkoutMainActivity.this,
                         "failed to load workouts",
                         Toast.LENGTH_SHORT).show());
     }
@@ -74,7 +74,7 @@ public class WorkoutListActivity extends FemliteDrawerActivity {
     public class Adapter extends RealmBasedRecyclerViewAdapter<RealmWorkout, Adapter.ViewHolder> {
 
         public Adapter() {
-            super(WorkoutListActivity.this, null, false, false);
+            super(WorkoutMainActivity.this, null, false, false);
         }
 
         public class ViewHolder extends RealmViewHolder {
@@ -98,7 +98,7 @@ public class WorkoutListActivity extends FemliteDrawerActivity {
             viewHolder.workoutItemView.setOnClickListener(
                     view -> {
                         Intent intent =
-                                new Intent(WorkoutListActivity.this, WorkoutDetailActivity.class);
+                                new Intent(WorkoutMainActivity.this, WorkoutDetailActivity.class);
                         intent.putExtra("workoutId", realmResults.get(position).getId());
                         startActivity(intent);
                     }
