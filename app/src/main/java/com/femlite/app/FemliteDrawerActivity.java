@@ -42,6 +42,9 @@ public abstract class FemliteDrawerActivity extends FemliteBaseActivity
         TextView headerName = (TextView) findViewById(R.id.header_name);
         ParseUser currentUser = ParseUser.getCurrentUser();
         headerName.setText(currentUser.getString("name"));
+
+        TextView headerEmail = (TextView) findViewById(R.id.header_email);
+        headerEmail.setText(currentUser.getString("email"));
     }
 
     public abstract int getContentLayoutResId();

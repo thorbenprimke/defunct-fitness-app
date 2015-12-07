@@ -31,7 +31,7 @@ public class PortionPicker extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         CharSequence[] items = new CharSequence[portions.size()];
         for (int i = 0; i < items.length; i++) {
-            items[i] = portions.get(i).getTitle() + " " + portions.get(i).getServingSize() + " " + portions.get(i).getCalories();
+            items[i] = portions.get(i).getTitle() + " ---- " + portions.get(i).getServingSize() + "(g) " + portions.get(i).getCalories() + " (kcal)";
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -40,10 +40,6 @@ public class PortionPicker extends DialogFragment {
                         items,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(
-                                        getContext(),
-                                        portions.get(which).getTitle(),
-                                        Toast.LENGTH_SHORT).show();
                                 if (clickListener != null) {
                                     clickListener.onPortionSelected(portions.get(which));
                                 }

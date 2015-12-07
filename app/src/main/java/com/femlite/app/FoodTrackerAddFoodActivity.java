@@ -197,6 +197,7 @@ public class FoodTrackerAddFoodActivity extends FemliteBaseActivity {
         @Override
         public void onBindFooterViewHolder(ViewHolder holder, int position) {
             super.onBindFooterViewHolder(holder, position);
+            holder.footerTextView.setText("Search for items...");
             holder.itemView.setOnClickListener(
                     new View.OnClickListener() {
                         @Override
