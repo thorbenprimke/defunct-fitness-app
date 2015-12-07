@@ -1,7 +1,9 @@
 package com.femlite.app;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.femlite.app.model.fddb.FddbResponse;
@@ -11,12 +13,16 @@ import com.parse.Parse;
 import com.parse.ParseCloud;
 import com.parse.ParseException;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.SimpleFormatter;
 
 import javax.inject.Inject;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observable;
@@ -28,11 +34,44 @@ public class FoodTrackerMainActivity extends FemliteDrawerActivity {
     @Inject
     FbbdService fbbdService;
 
+    @Bind(R.id.food_tracker_main_consumed_calories)
+    TextView consumedCalories;
+
+    @Bind(R.id.food_tracker_main_title_date)
+    TextView titleDate;
+
+    private Date date;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         getComponent().inject(this);
+
+
+        date = new Date();
+        updateData(0);
+    }
+
+    private void updateData(long offset) {
+        date = new Date(date.getTime() + offset);
+
+
+        Map<String, String> params = new HashMap<>();
+        params.put("date", new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").format(date));
+        params.put("offset", String.valueOf(-1 * date.getTimezoneOffset()));
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        titleDate.setText(simpleDateFormat.format(date));
+
+        ParseCloud.callFunctionInBackground(
+                "consumedFoodByDate",
+                params,
+                (object, e) -> {
+                    consumedCalories
+                            .setText("Consumed calories: " + ((HashMap) object).get("total"));
+                }
+        );
     }
 
     @Override
@@ -40,39 +79,18 @@ public class FoodTrackerMainActivity extends FemliteDrawerActivity {
         return R.layout.content_calorie_tracker_overview;
     }
 
+    @OnClick(R.id.food_tracker_main_title_before)
+    public void handleBeforeClicked() {
+        updateData(-(24 * 60 * 60 * 1000));
+    }
+
+    @OnClick(R.id.food_tracker_main_title_after)
+    public void handleAfterClicked() {
+        updateData(24 * 60 * 60 * 1000);
+    }
+
     @OnClick(R.id.food_tracker_button)
     public void handleFootTrackerButtonClicked() {
-//        startActivity(new Intent(this, FoodTrackerAddFoodActivity.class));
-
-//        Observable<FddbResponse> observable = fbbdService.search("GXQN0ME0NFN7K0DBBU1LHH9X", "de", "banane");
-//        observable
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribeOn(Schedulers.io())
-//                .subscribe(
-//                        foodItem -> {
-//                            foodItem.toString();
-//                            Log.d("network", "success");
-//                        },
-//                        throwable -> {
-//                            Log.d("network", "fail: " + throwable.toString());
-//                        },
-//                        () -> {
-//
-//                        });
-
-        Map<String, Date> params = new HashMap<>();
-        params.put("date", new Date(new Date().getTime() - (1 * 24 * 60 * 60 * 1000)));
-
-        ParseCloud.callFunctionInBackground(
-                "consumedFoodByDate",
-                params,
-                new FunctionCallback<Object>() {
-                    @Override
-                    public void done(Object object, ParseException e) {
-                        Toast.makeText(getApplicationContext(), "callback: " + ((HashMap) object).get("total"), Toast.LENGTH_SHORT).show();
-                    }
-                }
-        );
-
+        startActivity(new Intent(this, FoodTrackerAddFoodActivity.class));
     }
 }

@@ -1,21 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".FoodTrackerMainActivity"
-    tools:showIn="@layout/activity_calorie_tracker_overview">
+    tools:showIn="@layout/activity_calorie_tracker_overview"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/food_tracker_main_title_before"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Before"
+            />
+
+        <TextView
+            android:id="@+id/food_tracker_main_title_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            />
+
+        <Button
+            android:id="@+id/food_tracker_main_title_after"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="After"
+            />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/food_tracker_main_consumed_calories"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+
+        </LinearLayout>
+
+    </ScrollView>
 
     <Button
         android:id="@+id/food_tracker_button"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:text="@string/food_tracker_main_add_food"/>
-</RelativeLayout>
+        android:text="@string/food_tracker_main_add_food"
+        />
+</LinearLayout>
