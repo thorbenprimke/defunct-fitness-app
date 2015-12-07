@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import com.femlite.app.model.Portion;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import java.util.List;
 
 /**
@@ -31,7 +33,7 @@ public class PortionPicker extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         CharSequence[] items = new CharSequence[portions.size()];
         for (int i = 0; i < items.length; i++) {
-            items[i] = portions.get(i).getTitle() + " ---- " + portions.get(i).getServingSize() + "(g) " + portions.get(i).getCalories() + " (kcal)";
+            items[i] = StringEscapeUtils.unescapeHtml4(portions.get(i).getTitle()) + " => " + portions.get(i).getServingSize() + "(g) " + portions.get(i).getCalories() + " (kcal)";
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());

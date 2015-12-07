@@ -8,6 +8,8 @@ import android.widget.TextView;
 import com.femlite.app.R;
 import com.femlite.app.model.Food;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -40,6 +42,6 @@ public class FoodItemView extends RelativeLayout {
     }
 
     public void bind(Food food) {
-        title.setText(food.getTitle());
+        title.setText(StringEscapeUtils.unescapeHtml4(food.getTitle()));
     }
 }
