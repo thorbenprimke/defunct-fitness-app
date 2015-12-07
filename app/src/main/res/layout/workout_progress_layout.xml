@@ -12,7 +12,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="#c4bbde">
 
         <TextView
             android:id="@+id/workout_progress_title"
@@ -80,12 +81,21 @@
                 android:layout_gravity="center"
                 android:text="0"
                 android:textSize="32sp"/>
+
+            <ImageView
+                android:id="@+id/workout_progress_circle_play"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_play_active"
+                android:layout_gravity="center" />
         </FrameLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:orientation="horizontal"
             android:layout_gravity="center_horizontal">
 
@@ -99,11 +109,13 @@
 
             <TextView
                 android:id="@+id/workout_title"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_gravity="center_vertical"
+                android:gravity="center_horizontal"
                 android:text="@{model.nextTitle}"
                 />
 

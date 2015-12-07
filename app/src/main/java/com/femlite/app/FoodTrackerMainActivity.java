@@ -2,32 +2,21 @@ package com.femlite.app;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.femlite.app.model.fddb.FddbResponse;
 import com.femlite.app.network.FbbdService;
-import com.parse.FunctionCallback;
-import com.parse.Parse;
 import com.parse.ParseCloud;
-import com.parse.ParseException;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.SimpleFormatter;
 
 import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 public class FoodTrackerMainActivity extends FemliteDrawerActivity {
 

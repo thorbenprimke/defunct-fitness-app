@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.femlite.app.databinding.WorkoutProgressLayoutBinding;
@@ -30,7 +31,8 @@ import butterknife.OnClick;
 
 public class WorkoutProgressActivity extends FemliteBaseActivity {
 
-    private static final float DURATION_SEC = 5.f;
+    private static final float DURATION_WORKOUT_SEC = 4.f;
+    private static final float DURATION_BREAK_SEC = 2.f;
 
     private ProgressBar circleProgressView;
     private TextView circleText;
@@ -43,6 +45,9 @@ public class WorkoutProgressActivity extends FemliteBaseActivity {
 
     @Bind(R.id.workout_progress_timer_container)
     FrameLayout timerContainer;
+
+    @Bind(R.id.workout_progress_circle_play)
+    ImageView playImageView;
 
     private List<Exercise> exercises;
     private Workout workout;
@@ -115,6 +120,8 @@ public class WorkoutProgressActivity extends FemliteBaseActivity {
                     }
                 }
         );
+
+        circleText.setVisibility(View.GONE);
     }
 
     private void updateProgressIndicator() {
@@ -169,11 +176,16 @@ public class WorkoutProgressActivity extends FemliteBaseActivity {
 
         title.setText(parseExercise.getName());
 
-        stopped = true;
-        isRunning = false;
-        startTime = 0L;
-        circleProgressView.setProgress(0);
-        circleText.setText("0");
+        if (!isAutoAdvance) {
+            stopped = true;
+            isRunning = false;
+            startTime = 0L;
+            circleProgressView.setProgress(0);
+            circleText.setText("0");
+            playImageView.setVisibility(View.VISIBLE);
+            circleText.setVisibility(View.GONE);
+        }
+        isAutoAdvance = false;
 
         workoutProgressViewModel.setIndex(index);
         updateProgressIndicator();
@@ -185,16 +197,25 @@ public class WorkoutProgressActivity extends FemliteBaseActivity {
     private boolean stopped;
     private long startTime;
 
+    private boolean isBreak;
+    private boolean isAutoAdvance;
+
     private void startOrStopCounter() {
         if (isRunning) {
             stopped = true;
             isRunning = false;
             startTime = 0L;
+            isBreak = false;
+            playImageView.setVisibility(View.VISIBLE);
+            circleText.setVisibility(View.GONE);
         } else {
+            isBreak = false;
             stopped = false;
             isRunning = true;
             startTime = System.currentTimeMillis();
             circleText.setText("0");
+            playImageView.setVisibility(View.GONE);
+            circleText.setVisibility(View.VISIBLE);
             updateTimer();
         }
     }
@@ -207,15 +228,32 @@ public class WorkoutProgressActivity extends FemliteBaseActivity {
                         if (stopped) {
                             circleProgressView.setProgress(0);
                             circleText.setText("0");
+                            playImageView.setVisibility(View.VISIBLE);
+                            circleText.setVisibility(View.GONE);
                             return;
                         }
 
                         long diff = System.currentTimeMillis() - startTime;
                         diff = diff / 1000;
-                        if (diff > DURATION_SEC) {
-                            return;
+                        float duration = (isBreak ? DURATION_BREAK_SEC : DURATION_WORKOUT_SEC);
+                        if (diff > duration) {
+                            if (index == workout.getNumExercises() - 1) {
+                                Toast.makeText(getApplicationContext(), "All done!", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+
+                            startTime = System.currentTimeMillis();
+                            if (isBreak) {
+                                isAutoAdvance = true;
+                                handleNextButtonClick();
+                                Toast.makeText(getApplicationContext(), "Back to it", Toast.LENGTH_SHORT).show();
+                            } else  {
+                                Toast.makeText(getApplicationContext(), "Take a break", Toast.LENGTH_SHORT).show();
+                            }
+                            isBreak = !isBreak;
+                            diff = 0;
                         }
-                        circleProgressView.setProgress((int)(100.f/DURATION_SEC*((float) diff)));
+                        circleProgressView.setProgress((int)(100.f/duration*((float) diff)));
                         circleText.setText(String.valueOf(diff));
                         updateTimer();
                     }
