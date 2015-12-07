@@ -65,6 +65,5 @@ public class WorkoutFinishActivity extends FemliteBaseActivity {
                     }
                 }
         );
-
     }
 }

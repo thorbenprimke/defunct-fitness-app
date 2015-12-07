@@ -27,10 +27,6 @@ public abstract class FemliteBaseActivity extends AppCompatActivity
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initializeComponent();
-        Realm.setDefaultConfiguration(
-                new RealmConfiguration.Builder(this)
-                        .deleteRealmIfMigrationNeeded()
-                        .build());
     }
 
     @Override

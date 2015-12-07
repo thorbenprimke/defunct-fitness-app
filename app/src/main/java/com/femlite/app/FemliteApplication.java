@@ -12,6 +12,8 @@ import com.parse.Parse;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseObject;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 /**
@@ -24,6 +26,11 @@ public class FemliteApplication extends Application implements HasComponent<Appl
     @Override
     public void onCreate() {
         super.onCreate();
+
+        Realm.setDefaultConfiguration(
+                new RealmConfiguration.Builder(this)
+                        .deleteRealmIfMigrationNeeded()
+                        .build());
 
         initializeComponent();
 

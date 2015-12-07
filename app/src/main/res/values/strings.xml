@@ -14,4 +14,5 @@
 
     <string name="food_tracker_main_add_food">Add Food</string>
 
+    <string name="search_hint">Type the name of some food...</string>
 </resources>

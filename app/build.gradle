@@ -12,8 +12,8 @@ android {
         applicationId "com.femlite.app"
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        versionCode 901
+        versionName "0.9.1"
     }
     buildTypes {
         release {
@@ -62,7 +62,9 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.0.1'
 
     compile 'com.github.thorbenprimke:realm-recyclerview:0.9.7'
-
+//    compile 'com.github.thorbenprimke:realm-searchview:0.9.1'
+    compile 'com.github.thorbenprimke:realm-searchview:74f05a98a3'
+    //    compile project(':library')
 
     compile 'com.github.bumptech.glide:glide:3.6.1'
     compile 'jp.wasabeef:glide-transformations:1.2.1'

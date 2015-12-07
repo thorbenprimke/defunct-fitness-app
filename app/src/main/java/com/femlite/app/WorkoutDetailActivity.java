@@ -211,7 +211,7 @@ public class WorkoutDetailActivity extends FemliteBaseActivity {
 
     @OnClick(R.id.workout_detail_start_workout_button)
     public void handleStartWorkoutButtonClick() {
-        Intent intent = new Intent(this, WorkoutFinishActivity.class);
+        Intent intent = new Intent(this, WorkoutProgressActivity.class);
         intent.putExtra("WorkoutId", workoutId);
         intent.putExtra("WorkoutKey", workoutKey);
         startActivity(intent);
