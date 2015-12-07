@@ -11,6 +11,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.parse.LogOutCallback;
+import com.parse.ParseException;
+import com.parse.ParseSession;
 import com.parse.ParseUser;
 
 public abstract class FemliteDrawerActivity extends FemliteBaseActivity
@@ -89,6 +92,12 @@ public abstract class FemliteDrawerActivity extends FemliteBaseActivity
                 && !(this instanceof FoodTrackerMainActivity)) {
             Intent intent =
                     new Intent(FemliteDrawerActivity.this, FoodTrackerMainActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_log_out) {
+            ParseUser.logOut();
+            Intent intent = new Intent(this, FemliteDispatchActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         }
 
