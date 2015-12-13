@@ -27,6 +27,6 @@ public class FemliteDispatchActivity extends ParseLoginDispatchActivity {
 
   @Override
   protected Class<?> getTargetClass() {
-    return WorkoutMainActivity.class;
+    return FoodTrackerMainActivity.class;
   }
 }
