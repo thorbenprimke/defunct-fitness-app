@@ -35,4 +35,22 @@ public class StorageManager {
         realm.close();
         return hasWorkouts;
     }
+
+    public boolean hasWorkout(String workoutKey) {
+        Realm realm = Realm.getDefaultInstance();
+        boolean hasWorkout = realm
+                .where(RealmWorkout.class)
+                .equalTo("key", workoutKey)
+                .count() == 1;
+        realm.close();
+        return hasWorkout;
+    }
+
+    public void storeWorkout(Workout workout) {
+        Realm realm = Realm.getDefaultInstance();
+        realm.copyToRealmOrUpdate(new RealmWorkout(workout));
+        realm.close();
+    }
+
+
 }

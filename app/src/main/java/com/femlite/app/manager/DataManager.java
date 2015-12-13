@@ -8,6 +8,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import rx.Observable;
+import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -18,25 +19,18 @@ import rx.schedulers.Schedulers;
  */
 public class DataManager {
 
-    public static class ProgressUpdate {
-        public final boolean finished;
-        public final int progress;
-
-        public ProgressUpdate(boolean finished, int progress) {
-            this.finished = finished;
-            this.progress = progress;
-        }
-    }
-
     private final NetworkRequestManager networkRequestManager;
     private final StorageManager storageManager;
+    private final VideoManager videoManager;
 
     @Inject
     public DataManager(
             NetworkRequestManager networkRequestManager,
-            StorageManager storageManager) {
+            StorageManager storageManager,
+            VideoManager videoManager) {
         this.networkRequestManager = networkRequestManager;
         this.storageManager = storageManager;
+        this.videoManager = videoManager;
     }
 
     public Subscription getWorkouts(
@@ -44,7 +38,6 @@ public class DataManager {
             Action1<Throwable> onError) {
         return Observable
                 .create((Observable.OnSubscribe<Boolean>) subscriber -> {
-
                     if (storageManager.hasWorkouts()) {
                         subscriber.onNext(true);
                         subscriber.onCompleted();
@@ -71,5 +64,40 @@ public class DataManager {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(onNext, onError);
+    }
+
+    public Subscription getWorkout(
+            String workoutKey,
+            Action1<Boolean> onNext,
+            Action1<Throwable> onError) {
+        return Observable
+                .create((Observable.OnSubscribe<Boolean>) subscriber -> {
+                    if (storageManager.hasWorkout(workoutKey)) {
+                        subscriber.onNext(true);
+                        subscriber.onCompleted();
+                        return;
+                    }
+
+                    Workout workout = null;
+                    try {
+                        workout = networkRequestManager.fetchWorkout(workoutKey);
+                    } catch (ParseException e) {
+                        subscriber.onError(e);
+                    }
+                    storageManager.storeWorkout(workout);
+
+                    subscriber.onNext(true);
+                    subscriber.onCompleted();
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(onNext, onError);
+    }
+
+    public void loadVideo(
+            String videoUrl,
+            Action1<VideoManager.ProgressUpdate> onNext,
+            Action1<Throwable> onError) {
+        videoManager.loadVideo(videoUrl, onNext, onError);
     }
 }

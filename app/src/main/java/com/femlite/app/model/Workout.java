@@ -16,4 +16,14 @@ public interface Workout {
     int getNumExercises();
 
     String getId();
+
+    String getKey();
+
+    int getDurationMin();
+
+    int getCalories();
+
+    String getDescription();
+
+    String getCategory();
 }

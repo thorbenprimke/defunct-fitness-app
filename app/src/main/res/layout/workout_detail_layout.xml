@@ -101,6 +101,7 @@
             android:gravity="center_horizontal"
             android:textColor="#4A4A4A"
             android:textSize="16sp"
+            android:text="@{workout.title}"
             />
 
         <LinearLayout
@@ -115,7 +116,9 @@
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
                 android:textColor="#4A4A4A"
-                android:textSize="12sp"/>
+                android:textSize="12sp"
+                android:text="@{workout.durationMin}"
+                />
 
             <TextView
                 android:id="@+id/workout_detail_exercise_count"
@@ -124,7 +127,9 @@
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
                 android:textColor="#4A4A4A"
-                android:textSize="12sp"/>
+                android:textSize="12sp"
+                android:text="@{workout.exerciseCount}"
+                />
 
             <TextView
                 android:id="@+id/workout_detail_exercise_calorie"
@@ -133,7 +138,9 @@
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
                 android:textColor="#4A4A4A"
-                android:textSize="12sp"/>
+                android:textSize="12sp"
+                android:text="@{workout.calories}"
+                />
         </LinearLayout>
 
         <TextView

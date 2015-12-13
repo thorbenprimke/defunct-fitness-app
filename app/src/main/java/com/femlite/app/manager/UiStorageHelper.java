@@ -5,6 +5,7 @@ import com.femlite.app.model.realm.RealmWorkout;
 import javax.inject.Inject;
 
 import io.realm.Realm;
+import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
 /**
@@ -32,5 +33,9 @@ public class UiStorageHelper {
     public RealmResults<RealmWorkout> getWorkouts() {
         // query realm for all workouts
         return realm.where(RealmWorkout.class).findAll();
+    }
+
+    public RealmWorkout getWorkout(String workoutKey) {
+        return realm.where(RealmWorkout.class).equalTo("key", workoutKey).findFirst();
     }
 }

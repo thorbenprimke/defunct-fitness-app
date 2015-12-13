@@ -10,17 +10,10 @@ import io.realm.annotations.PrimaryKey;
  */
 public class RealmWorkout extends RealmObject implements Workout {
 
+    @PrimaryKey
+    private String id;
 
-    public RealmWorkout() {
-    }
-
-    public RealmWorkout(Workout workout) {
-        title = workout.getTitle();
-        photoUrl = workout.getPhotoUrl();
-        videoPlaceholderPhotoUrl = workout.getVideoPlaceholderPhotoUrl();
-        influencer = workout.getInfluencer();
-        id = workout.getId();
-    }
+    private String key;
 
     private String title;
 
@@ -32,8 +25,32 @@ public class RealmWorkout extends RealmObject implements Workout {
 
     private int numExercises;
 
-    @PrimaryKey
-    private String id;
+    private int durationMin;
+
+    private int calories;
+
+    private String description;
+
+    private String category;
+
+    private String otherField;
+
+    public RealmWorkout() {
+    }
+
+    public RealmWorkout(Workout workout) {
+        title = workout.getTitle();
+        photoUrl = workout.getPhotoUrl();
+        videoPlaceholderPhotoUrl = workout.getVideoPlaceholderPhotoUrl();
+        influencer = workout.getInfluencer();
+        id = workout.getId();
+        key = workout.getKey();
+        durationMin = workout.getDurationMin();
+        calories = workout.getCalories();
+        description = workout.getDescription();
+        category = workout.getCategory();
+        numExercises = workout.getNumExercises();
+    }
 
     @Override
     public String getTitle() {
@@ -65,6 +82,31 @@ public class RealmWorkout extends RealmObject implements Workout {
         return id;
     }
 
+    @Override
+    public String getKey() {
+        return key;
+    }
+
+    @Override
+    public int getDurationMin() {
+        return durationMin;
+    }
+
+    @Override
+    public int getCalories() {
+        return calories;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
+    public String getCategory() {
+        return category;
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }
@@ -87,5 +129,33 @@ public class RealmWorkout extends RealmObject implements Workout {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public void setDurationMin(int durationMin) {
+        this.durationMin = durationMin;
+    }
+
+    public void setCalories(int calories) {
+        this.calories = calories;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getOtherField() {
+        return otherField;
+    }
+
+    public void setOtherField(String otherField) {
+        this.otherField = otherField;
     }
 }

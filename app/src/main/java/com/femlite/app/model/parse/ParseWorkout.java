@@ -10,6 +10,7 @@ public class ParseWorkout extends ParseObject implements Workout {
     public ParseWorkout() {
     }
 
+    @Override
     public String getKey() {
         return getString("Key");
     }
@@ -19,7 +20,8 @@ public class ParseWorkout extends ParseObject implements Workout {
         return getString("Title");
     }
 
-    public String getType() {
+    @Override
+    public String getCategory() {
         return getString("Type");
     }
 
@@ -28,10 +30,12 @@ public class ParseWorkout extends ParseObject implements Workout {
         return getString("Influencer");
     }
 
+    @Override
     public int getDurationMin() {
         return getInt("Duration");
     }
 
+    @Override
     public int getCalories() {
         return getInt("Calories");
     }
@@ -41,6 +45,7 @@ public class ParseWorkout extends ParseObject implements Workout {
         return getInt("NumExercise");
     }
 
+    @Override
     public String getDescription() {
         return getString("Description");
     }

@@ -42,4 +42,10 @@ public class NetworkRequestManager {
 //                    adapter.addItems(workouts);
 //                });
     }
+
+    public Workout fetchWorkout(String workoutKey) throws ParseException {
+        ParseQuery<ParseWorkout> parseQuery = ParseQuery.getQuery(ParseWorkout.class);
+        parseQuery.whereEqualTo("Key", workoutKey);
+        return parseQuery.getFirst();
+    }
 }

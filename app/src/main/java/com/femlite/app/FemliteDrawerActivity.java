@@ -11,18 +11,27 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.femlite.app.manager.UserManager;
+import com.femlite.app.model.User;
+import com.femlite.app.model.parse.ParseFemliteUser;
 import com.parse.LogOutCallback;
 import com.parse.ParseException;
 import com.parse.ParseSession;
 import com.parse.ParseUser;
 
+import javax.inject.Inject;
+
 public abstract class FemliteDrawerActivity extends FemliteBaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    @Inject
+    UserManager userManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.femlite_drawer_activity);
+        getComponent().inject(this);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -40,11 +49,11 @@ public abstract class FemliteDrawerActivity extends FemliteBaseActivity
         drawer.addView(contentLayout, 0);
 
         TextView headerName = (TextView) findViewById(R.id.header_name);
-        ParseUser currentUser = ParseUser.getCurrentUser();
-        headerName.setText(currentUser.getString("name"));
-
         TextView headerEmail = (TextView) findViewById(R.id.header_email);
-        headerEmail.setText(currentUser.getString("email"));
+
+        User user = userManager.getUser();
+        headerName.setText(user.getName());
+        headerEmail.setText(user.getEmail());
     }
 
     public abstract int getContentLayoutResId();

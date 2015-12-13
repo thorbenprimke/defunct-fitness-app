@@ -7,6 +7,7 @@ import com.femlite.app.di.ApplicationModule;
 import com.femlite.app.di.DaggerApplicationComponent;
 import com.femlite.app.di.HasComponent;
 import com.femlite.app.model.parse.ParseExercise;
+import com.femlite.app.model.parse.ParseFemliteUser;
 import com.femlite.app.model.parse.ParseWorkout;
 import com.parse.Parse;
 import com.parse.ParseFacebookUtils;
@@ -45,6 +46,7 @@ public class FemliteApplication extends Application implements HasComponent<Appl
         // Parse Object registration
         ParseObject.registerSubclass(ParseWorkout.class);
         ParseObject.registerSubclass(ParseExercise.class);
+        ParseObject.registerSubclass(ParseFemliteUser.class);
 
         Parse.initialize(this);
 

@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.femlite.app.databinding.WorkoutProgressLayoutBinding;
+import com.femlite.app.misc.Constants;
 import com.femlite.app.model.Exercise;
 import com.femlite.app.model.Workout;
 import com.femlite.app.model.parse.ParseExercise;
@@ -75,11 +76,10 @@ public class WorkoutProgressActivity extends FemliteBaseActivity {
                 }
         );
 
-        String workoutId = getIntent().getStringExtra("WorkoutId");
-        String workoutKey = getIntent().getStringExtra("WorkoutKey");
+        String workoutKey = getIntent().getStringExtra(Constants.EXTRA_WORKOUT_KEY);
 
         ParseQuery<ParseWorkout> parseQuery = ParseQuery.getQuery(ParseWorkout.class);
-        parseQuery.whereEqualTo("objectId", workoutId);
+        parseQuery.whereEqualTo("Key", workoutKey);
         parseQuery.getFirstInBackground(
                 (workoutResult, e) -> {
                     workout = workoutResult;

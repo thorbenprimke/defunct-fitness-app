@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.femlite.app.manager.DataManager;
 import com.femlite.app.manager.UiStorageHelper;
+import com.femlite.app.misc.Constants;
 import com.femlite.app.model.realm.RealmWorkout;
 import com.femlite.app.views.WorkoutItemView;
 
@@ -61,14 +62,14 @@ public class WorkoutMainActivity extends FemliteDrawerActivity {
     }
 
     @Override
-    public int getContentLayoutResId() {
-        return R.layout.workout_list_layout;
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
         uiStorageHelper.onDestroy();
+    }
+
+    @Override
+    public int getContentLayoutResId() {
+        return R.layout.workout_list_layout;
     }
 
     public class Adapter extends RealmBasedRecyclerViewAdapter<RealmWorkout, Adapter.ViewHolder> {
@@ -99,7 +100,9 @@ public class WorkoutMainActivity extends FemliteDrawerActivity {
                     view -> {
                         Intent intent =
                                 new Intent(WorkoutMainActivity.this, WorkoutDetailActivity.class);
-                        intent.putExtra("workoutId", realmResults.get(position).getId());
+                        intent.putExtra(
+                                Constants.EXTRA_WORKOUT_KEY,
+                                realmResults.get(position).getKey());
                         startActivity(intent);
                     }
             );

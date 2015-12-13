@@ -11,8 +11,6 @@ import com.femlite.app.di.ApplicationComponent;
 import com.femlite.app.di.DaggerActivityComponent;
 import com.femlite.app.di.HasComponent;
 
-import io.realm.Realm;
-import io.realm.RealmConfiguration;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**

@@ -12,7 +12,7 @@ import jp.wasabeef.glide.transformations.CropCircleTransformation;
 /**
  * View Model for {@link Workout}.
  */
-public class WorkoutViewModel implements Workout {
+public class WorkoutViewModel {
 
     private Workout workout;
 
@@ -21,7 +21,7 @@ public class WorkoutViewModel implements Workout {
     }
 
     public String getTitle() {
-        return workout.getTitle();
+        return "\"" + workout.getTitle() + "\" " + workout.getCategory();
     }
 
     public String getPhotoUrl() {
@@ -32,19 +32,36 @@ public class WorkoutViewModel implements Workout {
         return workout.getVideoPlaceholderPhotoUrl();
     }
 
-    @Override
-    public int getNumExercises() {
-        return workout.getNumExercises();
-    }
-
-    @Override
     public String getId() {
         return workout.getId();
     }
 
-    @Override
+    public String getKey() {
+        return workout.getKey();
+    }
+
+    public String getDurationMin() {
+        return workout.getDurationMin() + " minutes";
+    }
+
+    public String getCalories() {
+        return workout.getCalories() + " calories";
+    }
+
+    public String getDescription() {
+        return workout.getDescription();
+    }
+
+    public String getCategory() {
+        return workout.getCategory();
+    }
+
     public String getInfluencer() {
         return workout.getInfluencer();
+    }
+
+    public String getExerciseCount() {
+        return workout.getNumExercises() + " exercises";
     }
 
     @BindingAdapter("bind:squareUrl")
