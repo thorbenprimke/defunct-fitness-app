@@ -33,7 +33,7 @@ public class RealmWorkout extends RealmObject implements Workout {
 
     private String category;
 
-    private String otherField;
+    private String videoUrl;
 
     public RealmWorkout() {
     }
@@ -50,6 +50,7 @@ public class RealmWorkout extends RealmObject implements Workout {
         description = workout.getDescription();
         category = workout.getCategory();
         numExercises = workout.getNumExercises();
+        videoUrl = workout.getVideoUrl();
     }
 
     @Override
@@ -107,6 +108,11 @@ public class RealmWorkout extends RealmObject implements Workout {
         return category;
     }
 
+    @Override
+    public String getVideoUrl() {
+        return videoUrl;
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }
@@ -151,11 +157,7 @@ public class RealmWorkout extends RealmObject implements Workout {
         this.category = category;
     }
 
-    public String getOtherField() {
-        return otherField;
-    }
-
-    public void setOtherField(String otherField) {
-        this.otherField = otherField;
+    public void setVideoUrl(String videoUrl) {
+        this.videoUrl = videoUrl;
     }
 }

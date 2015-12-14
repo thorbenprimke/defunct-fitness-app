@@ -6,4 +6,5 @@ package com.femlite.app.misc;
 public class Constants {
 
     public static final String EXTRA_WORKOUT_KEY = "workout_key";
+    public static final String EXTRA_VIDEO_URL = "video_url";
 }

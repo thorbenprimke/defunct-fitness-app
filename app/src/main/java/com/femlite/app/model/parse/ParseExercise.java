@@ -8,6 +8,11 @@ import com.parse.ParseObject;
 public class ParseExercise extends ParseObject implements Exercise {
 
     @Override
+    public String getId() {
+        return getObjectId();
+    }
+
+    @Override
     public String getWorkoutKey() {
         return getString("WorkoutKey");
     }
@@ -30,5 +35,15 @@ public class ParseExercise extends ParseObject implements Exercise {
     @Override
     public String getPhotoMidPositionUrl() {
         return getString("PhotoMidPositionUrl");
+    }
+
+    @Override
+    public String getVideoUrl() {
+        return getString("VideoUrl");
+    }
+
+    @Override
+    public int getLayout() {
+        return getInt("Layout");
     }
 }

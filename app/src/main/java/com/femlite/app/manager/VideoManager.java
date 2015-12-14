@@ -11,7 +11,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -24,6 +23,7 @@ import rx.schedulers.Schedulers;
  * Created by thorben2 on 12/13/15.
  */
 public class VideoManager {
+
 
     public static class ProgressUpdate {
         public final boolean finished;
@@ -52,7 +52,7 @@ public class VideoManager {
 
     public Subscription loadVideo(String videoUrl, Action1<ProgressUpdate> onNext, Action1<Throwable> onError) {
         final File filesDir = application.getFilesDir();
-        final File fileToStore = new File(filesDir + "/clip2.mp4");
+        final File fileToStore = new File(filesDir + "/" + videoUrl);
 
         return Observable
                 .create(new Observable.OnSubscribe<ProgressUpdate>() {
@@ -68,7 +68,7 @@ public class VideoManager {
                         OutputStream output = null;
                         HttpURLConnection connection = null;
                         try {
-                            URL url = new URL("https://dl.dropboxusercontent.com/u/2651558/femlite/video/femlite_video_1.mp4");
+                            URL url = new URL("https://dl.dropboxusercontent.com/u/2651558/femlite/video/" + videoUrl);
                             connection = (HttpURLConnection) url.openConnection();
                             connection.connect();
 
@@ -138,5 +138,9 @@ public class VideoManager {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(onNext, onError);
+    }
+
+    public boolean isVideoCached(String videoUrl) {
+        return new File(application.getFilesDir() + "/" + videoUrl).exists();
     }
 }

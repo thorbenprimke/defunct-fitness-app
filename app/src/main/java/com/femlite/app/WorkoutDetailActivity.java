@@ -2,12 +2,10 @@ package com.femlite.app;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
@@ -18,30 +16,14 @@ import com.femlite.app.manager.VideoManager;
 import com.femlite.app.misc.ActionHelper;
 import com.femlite.app.misc.Constants;
 import com.femlite.app.model.Workout;
-import com.femlite.app.model.parse.ParseWorkout;
-import com.femlite.app.model.realm.RealmWorkout;
 import com.femlite.app.viewmodel.WorkoutViewModel;
-import com.parse.ParseQuery;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import rx.Observable;
-import rx.Subscriber;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
-import rx.schedulers.Schedulers;
 
 public class WorkoutDetailActivity extends FemliteBaseActivity {
 
@@ -90,29 +72,21 @@ public class WorkoutDetailActivity extends FemliteBaseActivity {
                         binding.setWorkout(new WorkoutViewModel(workout));
 
                         dataManager.loadVideo(
-                                "videoUrl",
-                                new Action1<VideoManager.ProgressUpdate>() {
-                                    @Override
-                                    public void call(VideoManager.ProgressUpdate progressUpdate) {
-                                        if (progressUpdate.finished && progressUpdate.path != null) {
-                                            videoView.setVideoPath(progressUpdate.path);
-                                            playbackControl.setVisibility(View.VISIBLE);
-                                        } else if (!progressUpdate.finished) {
-                                            downloadProgress.setProgress(progressUpdate.progress);
-                                        } else {
-                                            Toast.makeText(
-                                                    WorkoutDetailActivity.this,
-                                                    "something went wrong",
-                                                    Toast.LENGTH_SHORT).show();
-                                        }
+                                workout.getVideoUrl(),
+                                progressUpdate -> {
+                                    if (progressUpdate.finished && progressUpdate.path != null) {
+                                        videoView.setVideoPath(progressUpdate.path);
+                                        playbackControl.setVisibility(View.VISIBLE);
+                                    } else if (!progressUpdate.finished) {
+                                        downloadProgress.setProgress(progressUpdate.progress);
+                                    } else {
+                                        Toast.makeText(
+                                                WorkoutDetailActivity.this,
+                                                "something went wrong",
+                                                Toast.LENGTH_SHORT).show();
                                     }
                                 },
-                                new Action1<Throwable>() {
-                                    @Override
-                                    public void call(Throwable throwable) {
-
-                                    }
-                                });
+                                ActionHelper.getDefaultErrorAction(getApplicationContext()));
                     }
                 },
                 ActionHelper.getDefaultErrorAction(this));
@@ -148,7 +122,8 @@ public class WorkoutDetailActivity extends FemliteBaseActivity {
 
     @OnClick(R.id.workout_detail_exercises_button)
     public void handleShowExerciseListClick() {
-        Intent intent = new Intent(this, ExerciseViewerActivity.class);
+        Intent intent = new Intent(this, ExerciseListActivity.class);
+        intent.putExtra(Constants.EXTRA_WORKOUT_KEY, workoutKey);
         startActivity(intent);
     }
 }

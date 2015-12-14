@@ -2,6 +2,8 @@ package com.femlite.app.model;
 
 public interface Exercise {
 
+    String getId();
+
     String getWorkoutKey();
 
     int getOrder();
@@ -11,4 +13,8 @@ public interface Exercise {
     String getPhotoStartPositionUrl();
 
     String getPhotoMidPositionUrl();
+
+    String getVideoUrl();
+
+    int getLayout();
 }

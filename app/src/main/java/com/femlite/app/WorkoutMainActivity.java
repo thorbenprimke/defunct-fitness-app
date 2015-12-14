@@ -69,7 +69,7 @@ public class WorkoutMainActivity extends FemliteDrawerActivity {
 
     @Override
     public int getContentLayoutResId() {
-        return R.layout.workout_list_layout;
+        return R.layout.workout_main_layout;
     }
 
     public class Adapter extends RealmBasedRecyclerViewAdapter<RealmWorkout, Adapter.ViewHolder> {

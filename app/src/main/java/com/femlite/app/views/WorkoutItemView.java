@@ -56,24 +56,23 @@ public class WorkoutItemView extends RelativeLayout {
 //        binding = WorkoutDetailLayoutBinding.bind(this);
     }
 
-    public void bind(Workout parseWorkout) {
+    public void bind(Workout workout) {
 
-        final String titleStr = parseWorkout.getTitle();
-//        final String type = parseWorkout.getType();
-        title.setText("\"" + titleStr /*+ "\" " + type*/);
-        subtitle.setText("By " + parseWorkout.getInfluencer());
+        final String titleStr = workout.getTitle();
+        title.setText("\"" + titleStr + "\" " + workout.getCategory());
+        subtitle.setText("By " + workout.getInfluencer());
 
         Glide.with(getContext())
-                .load("https://dl.dropboxusercontent.com/u/2651558/femlite/influencer/" + parseWorkout.getPhotoUrl())
+                .load("https://dl.dropboxusercontent.com/u/2651558/femlite/influencer/" + workout.getPhotoUrl())
                 .bitmapTransform(new CropCircleTransformation(getContext()))
                 .into(image);
 
-        final boolean featured = false; //parseWorkout.getBoolean("Featured");
+        final boolean featured = false; //workout.getBoolean("Featured");
         featuredLabel.setVisibility(featured ? View.VISIBLE : View.GONE);
 
         favorite.setImageResource(featured ?
                 R.drawable.ic_favorite_active : R.drawable.ic_favorite_inactive);
 
-//        binding.setWorkout(parseWorkout);
+//        binding.setWorkout(workout);
     }
 }

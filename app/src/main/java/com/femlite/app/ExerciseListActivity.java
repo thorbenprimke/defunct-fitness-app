@@ -2,69 +2,155 @@ package com.femlite.app;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.femlite.app.model.Workout;
-import com.femlite.app.model.parse.ParseWorkout;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
-import com.parse.ParseUser;
-import com.parse.SaveCallback;
+import com.femlite.app.manager.CacheManager;
+import com.femlite.app.manager.DataManager;
+import com.femlite.app.manager.UiStorageHelper;
+import com.femlite.app.manager.VideoManager;
+import com.femlite.app.misc.ActionHelper;
+import com.femlite.app.misc.Constants;
+import com.femlite.app.model.realm.RealmExercise;
+import com.femlite.app.views.ExerciseItemView;
 
-import java.util.Date;
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
+import co.moonmonkeylabs.realmrecyclerview.RealmRecyclerView;
+import io.realm.RealmBasedRecyclerViewAdapter;
+import io.realm.RealmResults;
+import io.realm.RealmViewHolder;
+import rx.Subscription;
+import rx.functions.Action1;
 
 public class ExerciseListActivity extends FemliteBaseActivity {
 
-    private String workoutId;
-    private Workout workout;
+    @Inject
+    DataManager dataManager;
 
-    @Bind(R.id.workout_finish_title)
-    TextView title;
+    @Inject
+    CacheManager cacheManager;
+
+    @Inject
+    UiStorageHelper uiStorageHelper;
+
+    private String workoutKey;
+
+    @Bind(R.id.exercise_recycler_view)
+    RealmRecyclerView recyclerView;
+
+    private Adapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.workout_finish_activity);
+        setContentView(R.layout.exercise_list_layout);
         ButterKnife.bind(this);
+        getComponent().inject(this);
+        uiStorageHelper.onCreate();
 
-        workoutId = getIntent().getStringExtra("WorkoutId");
+        adapter = new Adapter();
+        recyclerView.setAdapter(adapter);
 
-        ParseQuery<ParseWorkout> parseQuery = ParseQuery.getQuery(ParseWorkout.class);
-        parseQuery.whereEqualTo("objectId", workoutId);
-        parseQuery.getFirstInBackground(
-                (workoutResult, e) -> {
-                    workout = workoutResult;
-
-                    title.setText("Congratulations! You have done " + workout.getTitle() + " workout!");
-                }
-        );
-
+        workoutKey = getIntent().getStringExtra(Constants.EXTRA_WORKOUT_KEY);
+        dataManager.getExercises(
+                workoutKey,
+                fetched -> {
+                    if (fetched) {
+                        RealmResults<RealmExercise> workouts =
+                                uiStorageHelper.getExercises(workoutKey);
+                        adapter.updateRealmResults(workouts);
+                    } else {
+                        Toast.makeText(
+                                ExerciseListActivity.this,
+                                "failed to load exercises",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                },
+                ActionHelper.getDefaultErrorAction(this));
     }
 
-    @OnClick(R.id.workout_finish_finalize_button)
-    public void handleFinalizeButton() {
-        final ParseUser currentUser = ParseUser.getCurrentUser();
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        uiStorageHelper.onDestroy();
+    }
 
-        ParseObject userWorkoutRelation = new ParseObject("UserWorkout");
-        userWorkoutRelation.put("user", currentUser);
-        userWorkoutRelation.put("workout", workout);
-        userWorkoutRelation.put("workoutTime", new Date(System.currentTimeMillis()));
+    public class Adapter extends RealmBasedRecyclerViewAdapter<RealmExercise, Adapter.ViewHolder> {
 
-        userWorkoutRelation.saveInBackground(
-                new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        Intent intent = new Intent(ExerciseListActivity.this, WorkoutMainActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
+        public Adapter() {
+            super(ExerciseListActivity.this, null, false, false);
+        }
+
+        public class ViewHolder extends RealmViewHolder {
+
+            private ExerciseItemView exerciseItemView;
+            private Subscription subscription;
+
+            public ViewHolder(ExerciseItemView exerciseItemView) {
+                super(exerciseItemView);
+                this.exerciseItemView = exerciseItemView;
+            }
+        }
+
+        @Override
+        public ViewHolder onCreateRealmViewHolder(ViewGroup viewGroup, int i) {
+            return new ViewHolder(new ExerciseItemView(viewGroup.getContext()));
+        }
+
+        @Override
+        public void onBindRealmViewHolder(ViewHolder viewHolder, int position) {
+            if (viewHolder.subscription != null && !viewHolder.subscription.isUnsubscribed()) {
+                viewHolder.subscription.unsubscribe();
+                viewHolder.subscription = null;
+            }
+
+            RealmExercise realmExercise = realmResults.get(position);
+            viewHolder.exerciseItemView.bind(realmExercise);
+            viewHolder.exerciseItemView.setOnClickListener(
+                    view -> {
+                        if (viewHolder.subscription != null) {
+                            return;
+                        }
+
+                        if (viewHolder.subscription == null &&
+                                cacheManager.hasVideo(realmExercise.getVideoUrl())) {
+                            Intent intent = new Intent(
+                                    ExerciseListActivity.this,
+                                    ExerciseViewerActivity.class);
+                            intent.putExtra(Constants.EXTRA_VIDEO_URL, realmExercise.getVideoUrl());
+                            startActivity(intent);
+                        } else {
+                            viewHolder.subscription = cacheManager.loadVideo(
+                                    realmExercise.getVideoUrl(),
+                                    new Action1<VideoManager.ProgressUpdate>() {
+                                        @Override
+                                        public void call(VideoManager.ProgressUpdate progressUpdate) {
+                                            if (progressUpdate.finished && progressUpdate.path != null) {
+                                                viewHolder.subscription = null;
+                                                viewHolder.exerciseItemView.updateForPlay();
+                                            } else if (!progressUpdate.finished) {
+                                                viewHolder.exerciseItemView
+                                                        .updateForDownloadProgress(progressUpdate);
+                                            } else {
+                                                Toast.makeText(ExerciseListActivity.this, "error with video", Toast.LENGTH_SHORT).show();
+                                            }
+
+                                        }
+                                    },
+                                    new Action1<Throwable>() {
+                                        @Override
+                                        public void call(Throwable throwable) {
+                                            viewHolder.subscription = null;
+                                            Toast.makeText(ExerciseListActivity.this, "fatal error with video", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                        }
                     }
-                }
-        );
-
+            );
+        }
     }
 }

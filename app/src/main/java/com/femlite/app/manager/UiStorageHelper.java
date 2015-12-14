@@ -1,5 +1,6 @@
 package com.femlite.app.manager;
 
+import com.femlite.app.model.realm.RealmExercise;
 import com.femlite.app.model.realm.RealmWorkout;
 
 import javax.inject.Inject;
@@ -9,7 +10,8 @@ import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
 /**
- * Created by thorben2 on 12/1/15.
+ * UI / Realm helper to query UI data elements from the UI and ensures that the realm is present
+ * while the owning activity/fragment/view is active.
  */
 public class UiStorageHelper {
 
@@ -37,5 +39,9 @@ public class UiStorageHelper {
 
     public RealmWorkout getWorkout(String workoutKey) {
         return realm.where(RealmWorkout.class).equalTo("key", workoutKey).findFirst();
+    }
+
+    public RealmResults<RealmExercise> getExercises(String workoutKey) {
+        return realm.where(RealmExercise.class).equalTo("workoutKey", workoutKey).findAll();
     }
 }

@@ -2,12 +2,14 @@ package com.femlite.app.di;
 
 import android.app.Activity;
 
+import com.femlite.app.ExerciseListActivity;
 import com.femlite.app.FemliteBaseActivity;
 import com.femlite.app.FemliteDrawerActivity;
 import com.femlite.app.FoodTrackerAddFoodActivity;
 import com.femlite.app.FoodTrackerMainActivity;
 import com.femlite.app.WorkoutDetailActivity;
 import com.femlite.app.WorkoutMainActivity;
+import com.femlite.app.views.ExerciseItemView;
 
 import dagger.Component;
 
@@ -37,5 +39,7 @@ public interface ActivityComponent extends ApplicationComponent {
 
     void inject(WorkoutDetailActivity workoutDetailActivity);
 
-    void inject(FemliteBaseActivity femliteBaseActivity);
+    void inject(ExerciseListActivity exerciseListActivity);
+
+    void inject(ExerciseItemView exerciseItemView);
 }

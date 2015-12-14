@@ -1,6 +1,8 @@
 package com.femlite.app.manager;
 
+import com.femlite.app.model.Exercise;
 import com.femlite.app.model.Workout;
+import com.femlite.app.model.realm.RealmExercise;
 import com.femlite.app.model.realm.RealmWorkout;
 
 import java.util.List;
@@ -53,4 +55,24 @@ public class StorageManager {
     }
 
 
+    public boolean hasExercises(String workoutKey) {
+        Realm realm = Realm.getDefaultInstance();
+        boolean hasExercises = realm
+                .where(RealmExercise.class)
+                .equalTo("workoutKey", workoutKey)
+                .count() > 0;
+        realm.close();
+        return hasExercises;
+    }
+
+    public void storeExercises(List<Exercise> exercises) {
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        for (Exercise exercise : exercises) {
+            RealmExercise realmExercise = new RealmExercise(exercise);
+            realm.copyToRealmOrUpdate(realmExercise);
+        }
+        realm.commitTransaction();
+        realm.close();
+    }
 }

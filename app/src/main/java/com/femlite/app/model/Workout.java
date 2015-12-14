@@ -26,4 +26,6 @@ public interface Workout {
     String getDescription();
 
     String getCategory();
+
+    String getVideoUrl();
 }

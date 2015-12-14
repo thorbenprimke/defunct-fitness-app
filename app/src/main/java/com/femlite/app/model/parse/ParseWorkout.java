@@ -26,6 +26,11 @@ public class ParseWorkout extends ParseObject implements Workout {
     }
 
     @Override
+    public String getVideoUrl() {
+        return getString("VideoUrl");
+    }
+
+    @Override
     public String getInfluencer() {
         return getString("Influencer");
     }

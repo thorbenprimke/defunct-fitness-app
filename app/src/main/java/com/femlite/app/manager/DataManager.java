@@ -1,5 +1,6 @@
 package com.femlite.app.manager;
 
+import com.femlite.app.model.Exercise;
 import com.femlite.app.model.Workout;
 import com.parse.ParseException;
 
@@ -99,5 +100,39 @@ public class DataManager {
             Action1<VideoManager.ProgressUpdate> onNext,
             Action1<Throwable> onError) {
         videoManager.loadVideo(videoUrl, onNext, onError);
+    }
+
+    public Subscription getExercises(
+            String workoutKey,
+            Action1<Boolean> onNext,
+            Action1<Throwable> onError) {
+        return Observable
+                .create((Observable.OnSubscribe<Boolean>) subscriber -> {
+                    if (storageManager.hasExercises(workoutKey)) {
+                        subscriber.onNext(true);
+                        subscriber.onCompleted();
+                        return;
+                    }
+
+                    List<Exercise> exercises = null;
+                    try {
+                        exercises = networkRequestManager.fetchExercises(workoutKey);
+                    } catch (ParseException e) {
+                        subscriber.onError(e);
+                    }
+
+                    if (exercises == null) {
+                        subscriber.onNext(false);
+                        subscriber.onCompleted();
+                        return;
+                    }
+
+                    storageManager.storeExercises(exercises);
+                    subscriber.onNext(true);
+                    subscriber.onCompleted();
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(onNext, onError);
     }
 }
