@@ -4,6 +4,8 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.widget.VideoView;
 
+import com.femlite.app.misc.Constants;
+
 import java.io.File;
 
 import butterknife.Bind;
@@ -21,8 +23,8 @@ public class ExerciseViewerActivity extends FemliteBaseActivity {
         ButterKnife.bind(this);
 
 
-        final File filesDir = this.getFilesDir();
-        final File fileToStore = new File(filesDir + "/clip2.mp4");
+        String extraVideoUrl = getIntent().getStringExtra(Constants.EXTRA_VIDEO_URL);
+        final File videoUrl = new File(getFilesDir() + "/" + extraVideoUrl);
 
         videoView.setOnErrorListener((mp, what, extra) -> false);
         videoView.setOnPreparedListener(
@@ -33,6 +35,6 @@ public class ExerciseViewerActivity extends FemliteBaseActivity {
                     }
                 }
         );
-        videoView.setVideoPath(fileToStore.getPath());
+        videoView.setVideoPath(videoUrl.getPath());
     }
 }

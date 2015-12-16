@@ -9,6 +9,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -45,14 +47,16 @@ public class VideoManager {
 
     private final Application application;
 
+    private File basePath;
+
     @Inject
     public VideoManager(Application application) {
         this.application = application;
+        basePath = application.getFilesDir();
     }
 
     public Subscription loadVideo(String videoUrl, Action1<ProgressUpdate> onNext, Action1<Throwable> onError) {
-        final File filesDir = application.getFilesDir();
-        final File fileToStore = new File(filesDir + "/" + videoUrl);
+        final File fileToStore = new File(basePath + "/" + videoUrl);
 
         return Observable
                 .create(new Observable.OnSubscribe<ProgressUpdate>() {
@@ -75,11 +79,10 @@ public class VideoManager {
                             // expect HTTP 200 OK, so we don't mistakenly save error report
                             // instead of the file
                             if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                                deleteVideo(videoUrl);
                                 subscriber.onNext(new ProgressUpdate(true, 0, null));
                                 subscriber.onCompleted();
                                 return;
-//                                return "Server returned HTTP " + connection.getResponseCode()
-//                                        + " " + connection.getResponseMessage();
                             }
 
                             // this will be useful to display download percentage
@@ -98,25 +101,23 @@ public class VideoManager {
                                 if (subscriber.isUnsubscribed()) {
                                     input.close();
                                     subscriber.onCompleted();
+                                    deleteVideo(videoUrl);
                                     return;
                                 }
                                 total += count;
-                                // publishing the progress....
+
                                 if (fileLength > 0) { // only if total length is known{
                                     subscriber.onNext(new ProgressUpdate(
                                             false,
                                             (int) (total * 100 / fileLength)));
-
-//                                    downloadProgress.setProgress((int) (total * 100 / fileLength));
-//                                    publishProgress((int) (total * 100 / fileLength));
                                 }
                                 output.write(data, 0, count);
                             }
                         } catch (Exception e) {
                             subscriber.onNext(new ProgressUpdate(true, 0, null));
                             subscriber.onCompleted();
+                            deleteVideo(videoUrl);
                             return;
-//                            return e.toString();
                         } finally {
                             try {
                                 if (output != null)
@@ -129,18 +130,31 @@ public class VideoManager {
                             if (connection != null)
                                 connection.disconnect();
                         }
-//                        return null;
                         subscriber.onNext(new ProgressUpdate(true, 100, fileToStore.getPath()));
-//                        subscriber.onNext(true);
                         subscriber.onCompleted();
                     }
                 })
                 .subscribeOn(Schedulers.io())
+                .onBackpressureLatest()
+                .onBackpressureLatest()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(onNext, onError);
     }
 
+
     public boolean isVideoCached(String videoUrl) {
-        return new File(application.getFilesDir() + "/" + videoUrl).exists();
+        return new File(basePath + "/" + videoUrl).exists();
+    }
+
+    public String getVideoPath(String videoUrl) {
+        return new File(basePath + "/" + videoUrl).getPath();
+    }
+
+    public boolean deleteVideo(String videoUrl) {
+        File file = new File(basePath + "/" + videoUrl);
+        if (!file.exists()) {
+            return true;
+        }
+        return file.delete();
     }
 }

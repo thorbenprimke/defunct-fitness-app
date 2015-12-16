@@ -14,7 +14,7 @@ public class ActionHelper {
         return new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                Toast.makeText(context, "Failed to load data", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Failed to load data: " + throwable.toString(), Toast.LENGTH_SHORT).show();
             }
         };
     }

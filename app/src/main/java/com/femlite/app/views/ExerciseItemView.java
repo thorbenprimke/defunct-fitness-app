@@ -73,11 +73,11 @@ public class ExerciseItemView extends RelativeLayout {
                 .into(image);
         downloadProgress.setVisibility(View.GONE);
         if (cacheManager.hasVideo(exercise.getVideoUrl())) {
-            downloadButton.setVisibility(View.VISIBLE);
-            playButton.setVisibility(View.GONE);
-        } else {
             downloadButton.setVisibility(View.GONE);
             playButton.setVisibility(View.VISIBLE);
+        } else {
+            downloadButton.setVisibility(View.VISIBLE);
+            playButton.setVisibility(View.GONE);
         }
     }
 

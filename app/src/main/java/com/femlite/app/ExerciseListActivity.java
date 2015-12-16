@@ -2,6 +2,7 @@ package com.femlite.app;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -129,6 +130,8 @@ public class ExerciseListActivity extends FemliteBaseActivity {
                                     new Action1<VideoManager.ProgressUpdate>() {
                                         @Override
                                         public void call(VideoManager.ProgressUpdate progressUpdate) {
+                                            Log.d("Update: ", "Finished: " + progressUpdate.finished + " Status: " + progressUpdate.progress + " Path: " + progressUpdate.path);
+
                                             if (progressUpdate.finished && progressUpdate.path != null) {
                                                 viewHolder.subscription = null;
                                                 viewHolder.exerciseItemView.updateForPlay();
@@ -138,14 +141,13 @@ public class ExerciseListActivity extends FemliteBaseActivity {
                                             } else {
                                                 Toast.makeText(ExerciseListActivity.this, "error with video", Toast.LENGTH_SHORT).show();
                                             }
-
                                         }
                                     },
                                     new Action1<Throwable>() {
                                         @Override
                                         public void call(Throwable throwable) {
                                             viewHolder.subscription = null;
-                                            Toast.makeText(ExerciseListActivity.this, "fatal error with video", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(ExerciseListActivity.this, "fatal error with video " + throwable.toString(), Toast.LENGTH_SHORT).show();
                                         }
                                     });
                         }

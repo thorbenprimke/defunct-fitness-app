@@ -18,17 +18,23 @@ import com.femlite.app.misc.Constants;
 import com.femlite.app.model.Workout;
 import com.femlite.app.viewmodel.WorkoutViewModel;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.Subscriber;
 import rx.functions.Action1;
 
 public class WorkoutDetailActivity extends FemliteBaseActivity {
 
     @Inject
     DataManager dataManager;
+
+    @Inject
+    VideoManager videoManager;
 
     @Inject
     UiStorageHelper uiStorageHelper;
@@ -71,22 +77,31 @@ public class WorkoutDetailActivity extends FemliteBaseActivity {
                         Workout workout = uiStorageHelper.getWorkout(workoutKey);
                         binding.setWorkout(new WorkoutViewModel(workout));
 
-                        dataManager.loadVideo(
-                                workout.getVideoUrl(),
-                                progressUpdate -> {
-                                    if (progressUpdate.finished && progressUpdate.path != null) {
-                                        videoView.setVideoPath(progressUpdate.path);
-                                        playbackControl.setVisibility(View.VISIBLE);
-                                    } else if (!progressUpdate.finished) {
-                                        downloadProgress.setProgress(progressUpdate.progress);
-                                    } else {
-                                        Toast.makeText(
-                                                WorkoutDetailActivity.this,
-                                                "something went wrong",
-                                                Toast.LENGTH_SHORT).show();
-                                    }
-                                },
-                                ActionHelper.getDefaultErrorAction(getApplicationContext()));
+                        if (videoManager.isVideoCached(workout.getVideoUrl())) {
+                            videoView.setVideoPath(videoManager.getVideoPath(workout.getVideoUrl()));
+                            playbackControl.setVisibility(View.VISIBLE);
+                        } else {
+                            videoManager.loadVideo(
+                                    workout.getVideoUrl(),
+                                    new Action1<VideoManager.ProgressUpdate>() {
+                                        @Override
+                                        public void call(VideoManager.ProgressUpdate progressUpdate) {
+                                            if (progressUpdate.finished && progressUpdate.path != null) {
+                                                videoView.setVideoPath(progressUpdate.path);
+                                                playbackControl.setVisibility(View.VISIBLE);
+                                            } else if (!progressUpdate.finished) {
+                                                downloadProgress.setProgress(progressUpdate.progress);
+                                            } else {
+                                                Toast.makeText(
+                                                        WorkoutDetailActivity.this,
+                                                        "something went wrong",
+                                                        Toast.LENGTH_SHORT).show();
+                                            }
+
+                                        }
+                                    },
+                                    ActionHelper.getDefaultErrorAction(getApplicationContext()));
+                        }
                     }
                 },
                 ActionHelper.getDefaultErrorAction(this));
