@@ -11,5 +11,9 @@ public interface Food {
 
     String getTitle();
 
+    String getSubTitle();
+
+    String getImageUrl();
+
     List<Portion> getPortions();
 }

@@ -48,8 +48,8 @@ public abstract class FemliteDrawerActivity extends FemliteBaseActivity
                 false);
         drawer.addView(contentLayout, 0);
 
-        TextView headerName = (TextView) findViewById(R.id.header_name);
-        TextView headerEmail = (TextView) findViewById(R.id.header_email);
+        TextView headerName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.header_name);
+        TextView headerEmail = (TextView) navigationView.getHeaderView(0).findViewById(R.id.header_email);
 
         User user = userManager.getUser();
         headerName.setText(user.getName());
@@ -111,8 +111,24 @@ public abstract class FemliteDrawerActivity extends FemliteBaseActivity
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
                     | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
+        } else if (id == R.id.nav_workout_planner  && !(this instanceof WorkoutPlanActivity)) {
+            Intent intent =
+                    new Intent(FemliteDrawerActivity.this, WorkoutPlanActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_profile  && !(this instanceof ProfileActivity)) {
+            Intent intent =
+                    new Intent(FemliteDrawerActivity.this, ProfileActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_people_search) {
+            Intent intent =
+                    new Intent(FemliteDrawerActivity.this, PeopleActivity.class);
+            intent.putExtra(PeopleActivity.INTENTEXTRA_MODE, PeopleActivity.ActivityMode.SEARCH_NEW_FRIENDS);
+            startActivity(intent);
+        } else if (id == R.id.nav_recipe_list && !(this instanceof RecipeIdeasActivity)) {
+            Intent intent =
+                    new Intent(FemliteDrawerActivity.this, RecipeIdeasActivity.class);
+            startActivity(intent);
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

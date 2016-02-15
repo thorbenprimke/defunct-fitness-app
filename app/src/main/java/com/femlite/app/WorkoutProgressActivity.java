@@ -22,6 +22,7 @@ import com.femlite.app.model.parse.ParseExercise;
 import com.femlite.app.model.parse.ParseWorkout;
 import com.femlite.app.viewmodel.WorkoutProgressViewModel;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +33,8 @@ import butterknife.OnClick;
 
 public class WorkoutProgressActivity extends FemliteBaseActivity {
 
-    private static final float DURATION_WORKOUT_SEC = 4.f;
-    private static final float DURATION_BREAK_SEC = 2.f;
+    private float DURATION_WORKOUT_SEC = 4.f;
+    private float DURATION_BREAK_SEC = 2.f;
 
     private ProgressBar circleProgressView;
     private TextView circleText;
@@ -78,6 +79,21 @@ public class WorkoutProgressActivity extends FemliteBaseActivity {
 
         String workoutKey = getIntent().getStringExtra(Constants.EXTRA_WORKOUT_KEY);
 
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        int fitnessType = currentUser.getInt("FitnessType");
+//        if (fitnessType == 1) {
+//            DURATION_WORKOUT_SEC = 25.f;
+//            DURATION_BREAK_SEC = 15.f;
+//        } else if (fitnessType == 2) {
+//            DURATION_WORKOUT_SEC = 30.f;
+//            DURATION_BREAK_SEC = 10.f;
+//        } else if (fitnessType == 3) {
+//            DURATION_WORKOUT_SEC = 35.f;
+//            DURATION_BREAK_SEC = 5.f;
+//        }
+
+
+        // TODO: Update to only load this once - doesn't need to be loaded each time.
         ParseQuery<ParseWorkout> parseQuery = ParseQuery.getQuery(ParseWorkout.class);
         parseQuery.whereEqualTo("Key", workoutKey);
         parseQuery.getFirstInBackground(
@@ -129,7 +145,7 @@ public class WorkoutProgressActivity extends FemliteBaseActivity {
         for (int i = 0; i < childCount; i++) {
             final View childAt = progressIndicatorContainer.getChildAt(i);
             ((ImageView) childAt).setImageResource(
-                    i == index ? R.drawable.progress_indicator_active :
+                    i <= index ? R.drawable.progress_indicator_active :
                             R.drawable.progress_indicator_inactive);
 
         }
@@ -180,8 +196,8 @@ public class WorkoutProgressActivity extends FemliteBaseActivity {
             stopped = true;
             isRunning = false;
             startTime = 0L;
-            circleProgressView.setProgress(0);
-            circleText.setText("0");
+            circleProgressView.setProgress(100);
+            circleText.setText(String.valueOf((int) getDuration()));
             playImageView.setVisibility(View.VISIBLE);
             circleText.setVisibility(View.GONE);
         }
@@ -213,7 +229,8 @@ public class WorkoutProgressActivity extends FemliteBaseActivity {
             stopped = false;
             isRunning = true;
             startTime = System.currentTimeMillis();
-            circleText.setText("0");
+            circleText.setText(String.valueOf((int) getDuration()));
+            circleProgressView.setProgress(100);
             playImageView.setVisibility(View.GONE);
             circleText.setVisibility(View.VISIBLE);
             updateTimer();
@@ -226,8 +243,8 @@ public class WorkoutProgressActivity extends FemliteBaseActivity {
                     @Override
                     public void run() {
                         if (stopped) {
-                            circleProgressView.setProgress(0);
-                            circleText.setText("0");
+                            circleProgressView.setProgress(100);
+                            circleText.setText(String.valueOf((int) getDuration()));
                             playImageView.setVisibility(View.VISIBLE);
                             circleText.setVisibility(View.GONE);
                             return;
@@ -235,7 +252,7 @@ public class WorkoutProgressActivity extends FemliteBaseActivity {
 
                         long diff = System.currentTimeMillis() - startTime;
                         diff = diff / 1000;
-                        float duration = (isBreak ? DURATION_BREAK_SEC : DURATION_WORKOUT_SEC);
+                        float duration = getDuration();
                         if (diff > duration) {
                             if (index == workout.getNumExercises() - 1) {
                                 Toast.makeText(getApplicationContext(), "All done!", Toast.LENGTH_SHORT).show();
@@ -251,13 +268,19 @@ public class WorkoutProgressActivity extends FemliteBaseActivity {
                                 Toast.makeText(getApplicationContext(), "Take a break", Toast.LENGTH_SHORT).show();
                             }
                             isBreak = !isBreak;
+                            duration = getDuration();
                             diff = 0;
                         }
-                        circleProgressView.setProgress((int)(100.f/duration*((float) diff)));
-                        circleText.setText(String.valueOf(diff));
+
+                        circleProgressView.setProgress(100 - (int)(100.f / duration * ((float) diff)));
+                        circleText.setText(String.valueOf((int) (duration - diff)));
                         updateTimer();
                     }
                 }
                 ,1000);
+    }
+
+    public float getDuration() {
+        return isBreak ? DURATION_BREAK_SEC : DURATION_WORKOUT_SEC;
     }
 }

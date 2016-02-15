@@ -18,6 +18,10 @@ public class RealmFood extends RealmObject implements Food {
 
     private String title;
 
+    private String subTitle;
+
+    private String imageUrl;
+
     private RealmList<RealmPortion> realmPortions;
 
     @Ignore
@@ -26,9 +30,11 @@ public class RealmFood extends RealmObject implements Food {
     public RealmFood() {
     }
 
-    public RealmFood(String id, String title, RealmList<RealmPortion> portions) {
+    public RealmFood(String id, String title, String subTitle, String imageUrl, RealmList<RealmPortion> portions) {
         this.id = id;
         this.title = title;
+        this.subTitle = subTitle;
+        this.imageUrl = imageUrl;
         this.realmPortions = portions;
     }
 
@@ -71,5 +77,21 @@ public class RealmFood extends RealmObject implements Food {
 
     public void setPortions(List<Portion> portions) {
         this.portions = portions;
+    }
+
+    public String getSubTitle() {
+        return subTitle;
+    }
+
+    public void setSubTitle(String subTitle) {
+        this.subTitle = subTitle;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

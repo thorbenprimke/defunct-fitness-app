@@ -2,14 +2,26 @@ package com.femlite.app;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.femlite.app.manager.DataManager;
 import com.femlite.app.manager.UiStorageHelper;
+import com.femlite.app.manager.UserManager;
 import com.femlite.app.misc.Constants;
 import com.femlite.app.model.realm.RealmWorkout;
 import com.femlite.app.views.WorkoutItemView;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+import com.tapglue.Tapglue;
+import com.tapglue.model.TGEvent;
+import com.tapglue.model.TGEventObject;
+import com.tapglue.model.TGFeed;
+import com.tapglue.model.TGUser;
+import com.tapglue.networking.requests.TGRequestCallback;
+import com.tapglue.networking.requests.TGRequestErrorType;
 
 import javax.inject.Inject;
 
@@ -27,6 +39,9 @@ public class WorkoutMainActivity extends FemliteDrawerActivity {
 
     @Inject
     DataManager dataManager;
+
+    @Inject
+    UserManager userManager;
 
     @Inject
     UiStorageHelper uiStorageHelper;
@@ -59,6 +74,104 @@ public class WorkoutMainActivity extends FemliteDrawerActivity {
                         WorkoutMainActivity.this,
                         "failed to load workouts",
                         Toast.LENGTH_SHORT).show());
+
+        Tapglue.user().createAndLoginUserWithUsernameAndMail(
+                userManager.getUser().getUsername(),
+                userManager.getUser().getUsername(),
+                userManager.getUser().getUsername() + "@testing.com",
+                new TGRequestCallback<Boolean>() {
+                    @Override
+                    public boolean callbackIsEnabled() {
+                        return true;
+                    }
+
+                    @Override
+                    public void onRequestError(TGRequestErrorType cause) {
+                        Log.d("tapglue", cause.getMessage());
+                    }
+
+                    @Override
+                    public void onRequestFinished(Boolean output, boolean changeDoneOnline) {
+                        Log.d("tapglue", output + "");
+
+                        JsonElement jsonObject = new JsonPrimitive("some string");
+//                        JsonObject jsonObject = new JsonObject();
+//                        jsonObject.addProperty("testing", "good stuff");
+
+                        TGEventObject tgEventObject = new TGEventObject();
+                        tgEventObject.setUrl("http://www.femlite.com");
+                        tgEventObject.setID("1243");
+
+                        TGEvent event = new TGEvent()
+                                .setType("like")
+                                .setLanguage("en")
+                                .setLocation("berlin")
+                                .setPriority("1")
+                                .setVisibility(TGEvent.TGEventVisibility.Global)
+                                .setObject(tgEventObject)
+                                .setMetadata(jsonObject);
+
+                        Tapglue.event().createEvent(event, new TGRequestCallback<TGEvent>() {
+                            @Override
+                            public boolean callbackIsEnabled() {
+                                return true;
+                            }
+
+                            @Override
+                            public void onRequestError(TGRequestErrorType cause) {
+                                Log.d("tapglue", cause.getMessage());
+
+                            }
+
+                            @Override
+                            public void onRequestFinished(TGEvent output, boolean changeDoneOnline) {
+                                Log.d("tapglue", output + "");
+                            }
+                        });
+
+                        Tapglue.feed().retrieveEventsForCurrentUser(
+                                new TGRequestCallback<TGFeed>() {
+                                    @Override
+                                    public boolean callbackIsEnabled() {
+                                        return true;
+                                    }
+
+                                    @Override
+                                    public void onRequestError(TGRequestErrorType cause) {
+
+                                    }
+
+                                    @Override
+                                    public void onRequestFinished(TGFeed output, boolean changeDoneOnline) {
+                                        Log.d("tapglue", output + "");
+                                    }
+                                }
+                        );
+//
+                        Tapglue.feed().retrieveFeedForCurrentUser(
+                                new TGRequestCallback<TGFeed>() {
+                                    @Override
+                                    public boolean callbackIsEnabled() {
+                                        return true;
+                                    }
+
+                                    @Override
+                                    public void onRequestError(TGRequestErrorType cause) {
+
+                                    }
+
+                                    @Override
+                                    public void onRequestFinished(TGFeed output, boolean changeDoneOnline) {
+                                        Log.d("tapglue", output + "");
+                                    }
+                                }
+                        );
+                    }
+                }
+        );
+
+
+
     }
 
     @Override

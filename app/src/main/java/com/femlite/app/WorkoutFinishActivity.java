@@ -26,6 +26,9 @@ public class WorkoutFinishActivity extends FemliteBaseActivity {
     @Bind(R.id.workout_finish_title)
     TextView title;
 
+    @Bind(R.id.workout_finish_calorie_count)
+    TextView calorieCount;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +44,7 @@ public class WorkoutFinishActivity extends FemliteBaseActivity {
                     workout = workoutResult;
 
                     title.setText("Congratulations! You have done " + workout.getTitle() + " workout!");
+                    calorieCount.setText(String.valueOf(workout.getCalories()));
                 }
         );
 

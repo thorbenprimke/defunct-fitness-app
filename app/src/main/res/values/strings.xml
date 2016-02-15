@@ -15,4 +15,27 @@
     <string name="food_tracker_main_add_food">Add Food</string>
 
     <string name="search_hint">Type the name of some food...</string>
+
+
+
+
+    <!-- delete below before release-->
+    <string name="toast_loginerror">Login error</string>
+    <string name="toast_registrationerror">Registration error</string>
+    <string name="toast_networkerror">Network error</string>
+    <string name="title_activity_user_details">UserDetailsActivity</string>
+    <string name="title_activity_feed">FeedActivity</string>
+    <string name="search">Search</string>
+    <string name="friends">Friends</string>
+    <string name="followedby">Followed by</string>
+    <string name="follows">Follows</string>
+    <string name="pendingfriendrequests">Pending friends requests</string>
+    <string name="feed">Feed</string>
+    <string name="unfriend">Unfriend</string>
+    <string name="addfriend">Add to friends</string>
+    <string name="unfollow">Unfollow</string>
+    <string name="pendindfriendrequests">Pending friend req</string>
+    <string name="follow">Follow</string>
+    <string name="addtofriends">Add to friends</string>
+
 </resources>

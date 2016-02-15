@@ -14,14 +14,14 @@ public class RealmPortion extends RealmObject implements Portion {
 
     private int calories;
 
-    private int servingSize;
+    private double servingSize;
 
     public RealmPortion() {
     }
 
     public RealmPortion(Serving serving, int baseAmount, int baseCalorie) {
         title = serving.getName();
-        servingSize = Integer.parseInt(serving.getWeight_gram());
+        servingSize = Double.parseDouble(serving.getWeight_gram());
         calories = (int) (((double) servingSize / (double) baseAmount) * baseCalorie);
     }
 
@@ -36,7 +36,7 @@ public class RealmPortion extends RealmObject implements Portion {
     }
 
     @Override
-    public int getServingSize() {
+    public double getServingSize() {
         return servingSize;
     }
 
@@ -48,7 +48,7 @@ public class RealmPortion extends RealmObject implements Portion {
         this.calories = calories;
     }
 
-    public void setServingSize(int servingSize) {
+    public void setServingSize(double servingSize) {
         this.servingSize = servingSize;
     }
 }

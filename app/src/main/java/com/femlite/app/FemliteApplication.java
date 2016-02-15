@@ -12,6 +12,7 @@ import com.femlite.app.model.parse.ParseWorkout;
 import com.parse.Parse;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseObject;
+import com.tapglue.Tapglue;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -36,9 +37,9 @@ public class FemliteApplication extends Application implements HasComponent<Appl
         initializeComponent();
 
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                        .setDefaultFontPath("fonts/Roboto-Bold.ttf")
-                        .setFontAttrId(R.attr.fontPath)
-                        .build());
+                .setDefaultFontPath("fonts/Roboto-Bold.ttf")
+                .setFontAttrId(R.attr.fontPath)
+                .build());
 
         // Enable Local Datastore.
         Parse.enableLocalDatastore(this);
@@ -53,6 +54,11 @@ public class FemliteApplication extends Application implements HasComponent<Appl
         Parse.setLogLevel(Parse.LOG_LEVEL_DEBUG);
 
         ParseFacebookUtils.initialize(this);
+
+        Tapglue.TGConfiguration config = new Tapglue.TGConfiguration()
+                .setToken("2529e450f4765ca138554011cb5c6559")
+                .setDebugMode(true);
+        Tapglue.initialize(this, config);
     }
 
     // ================================================================================

@@ -12,8 +12,8 @@ android {
         applicationId "com.femlite.app"
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 901
-        versionName "0.9.1"
+        versionCode 902
+        versionName "0.9.2"
     }
     buildTypes {
         release {
@@ -41,8 +41,9 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:23.1.0'
-    compile 'com.android.support:recyclerview-v7:23.1.0'
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:recyclerview-v7:23.1.1'
+    compile 'com.android.support:design:23.1.1'
 
     apt 'com.google.dagger:dagger-compiler:2.0'
     compile 'com.google.dagger:dagger:2.0'
@@ -63,8 +64,8 @@ dependencies {
 
     compile 'com.github.thorbenprimke:realm-recyclerview:0.9.7'
 //    compile 'com.github.thorbenprimke:realm-searchview:0.9.1'
-    compile 'com.github.thorbenprimke:realm-searchview:74f05a98a3'
-    //    compile project(':library')
+//    compile 'com.github.thorbenprimke:realm-searchview:74f05a98a3'
+    compile project(':searchlibrary')
 
     compile 'com.github.bumptech.glide:glide:3.6.1'
     compile 'jp.wasabeef:glide-transformations:1.2.1'
@@ -72,14 +73,14 @@ dependencies {
     compile 'com.parse.bolts:bolts-android:1.+'
     compile 'com.parse:parse-android:1.+'
 
-    compile project(':ParseUI-Login')
-    compile project(':ParseUI-Widget')
-
-    compile 'io.realm:realm-android:0.85.1'
-
-// Uncomment if using Facebook Login (optional Maven dependency)
+    compile 'com.parse:parseui-login-android:0.0.1'
+    compile 'com.parse:parseui-widget-android:0.0.1'
     compile 'com.facebook.android:facebook-android-sdk:4.6.0'
     compile 'com.parse:parsefacebookutils-v4-android:1.10.3@aar'
+//    compile project(':ParseUI-Login')
+//    compile project(':ParseUI-Widget')
+
+    compile 'io.realm:realm-android:0.85.1'
 
     compile 'com.jakewharton:butterknife:7.0.1'
 
@@ -92,5 +93,10 @@ dependencies {
     compile 'com.darwinsys:hirondelle-date4j:1.5.1'
     compile 'com.github.antonyt:InfiniteViewPager:v1.0.0'
 
+//    compile 'com.tapglue.android:tapglue-android-sdk:1.0.0'
+    compile project(':tapglue')
+
+
     retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:+'
+    compile 'com.google.android.gms:play-services-appindexing:8.1.0'
 }

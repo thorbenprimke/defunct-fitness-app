@@ -1,3 +1,9 @@
 include ':app'
-include ':ParseUI-Login'
-include ':ParseUI-Widget'
+//include ':ParseUI-Login'
+//include ':ParseUI-Widget'
+
+include 'searchlibrary'
+project(':searchlibrary').projectDir = new File(settingsDir, '../realm-searchview/library')
+
+include 'tapglue'
+project(':tapglue').projectDir = new File(settingsDir, '../tapglue_sdk/tapglue-android-sdk')

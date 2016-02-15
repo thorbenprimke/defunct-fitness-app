@@ -9,5 +9,5 @@ public interface Portion {
 
     int getCalories();
 
-    int getServingSize();
+    double getServingSize();
 }

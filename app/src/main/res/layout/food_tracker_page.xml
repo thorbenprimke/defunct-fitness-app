@@ -1,34 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/food_tracker_main_title_before"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Before"
-            />
-
-        <TextView
-            android:id="@+id/food_tracker_main_title_date"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            />
-
-        <Button
-            android:id="@+id/food_tracker_main_title_after"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="After"
-            />
-    </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -40,13 +15,83 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="25dp">
+
+                <TextView
+                    android:id="@+id/food_tracker_day_consumed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_alignParentLeft="true"
+                    android:text="consumed"
+                    android:gravity="center_horizontal"
+                    />
+
+                <TextView
+                    android:id="@+id/food_tracker_day_burned"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_alignParentRight="true"
+                    android:text="\???\nBurned"
+                    android:gravity="center_horizontal"
+                    />
+            </RelativeLayout>
+
+            <FrameLayout
+                android:id="@+id/workout_progress_timer_container"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center_horizontal">
+
+                <ProgressBar
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:indeterminate="false"
+                    android:max="100"
+                    android:progress="100"
+                    android:progressDrawable="@drawable/circle_progress_background" />
+
+                <ProgressBar
+                    android:id="@+id/circle_progress_bar"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:max="100"
+                    android:rotation="-90"
+                    android:indeterminate="false"
+                    android:progressDrawable="@drawable/circle_progress_foreground" />
+
+                <TextView
+                    android:id="@+id/food_tracker_main_consumed_calories"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    />
+            </FrameLayout>
+
             <TextView
-                android:id="@+id/food_tracker_main_consumed_calories"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                />
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:text="Remaining" />
 
+            <Button
+                android:id="@+id/food_tracker_day_add_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="40dp"
+                android:text="@string/food_tracker_main_add_food"/>
         </LinearLayout>
-
     </ScrollView>
 </LinearLayout>

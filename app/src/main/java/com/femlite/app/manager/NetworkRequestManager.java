@@ -1,8 +1,10 @@
 package com.femlite.app.manager;
 
 import com.femlite.app.model.Exercise;
+import com.femlite.app.model.Recipe;
 import com.femlite.app.model.Workout;
 import com.femlite.app.model.parse.ParseExercise;
+import com.femlite.app.model.parse.ParseRecipe;
 import com.femlite.app.model.parse.ParseWorkout;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -51,5 +53,16 @@ public class NetworkRequestManager {
             exercises.add(parseExercise);
         }
         return exercises;
+    }
+
+    public List<Recipe> fetchRecipes() throws ParseException {
+        ParseQuery<ParseRecipe> query = ParseQuery.getQuery(ParseRecipe.class);
+        List<ParseRecipe> parseRecipes = query.find();
+
+        List<Recipe> recipes = new ArrayList<>(parseRecipes.size());
+        for (ParseRecipe parseRecipe : parseRecipes) {
+            recipes.add(parseRecipe);
+        }
+        return recipes;
     }
 }

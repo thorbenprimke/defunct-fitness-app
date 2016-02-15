@@ -24,6 +24,7 @@ import com.femlite.app.network.FbbdService;
 import com.femlite.app.views.FoodItemView;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.util.Date;
@@ -88,7 +89,23 @@ public class FoodTrackerAddFoodActivity extends FemliteBaseActivity {
                                     portions.add(new RealmPortion(serving, amount, kcal));
                                 }
 
-                                RealmFood food = new RealmFood(item.getId(), item.getDescription().getName(), portions);
+                                String subTitle = "";
+                                if (item.getDescription().getGroup() != null) {
+                                    subTitle += item.getDescription().getGroup() + " - ";
+                                }
+                                if (item.getDescription().getOption() != null) {
+                                    subTitle += item.getDescription().getOption() + " - ";
+                                }
+                                if (item.getDescription().getProducer() != null) {
+                                    subTitle += item.getDescription().getProducer() + " - ";
+                                }
+
+                                RealmFood food = new RealmFood(
+                                        item.getId(),
+                                        item.getDescription().getName(),
+                                        subTitle,
+                                        item.getThumbsrc(),
+                                        portions);
                                 realm.copyToRealmOrUpdate(food);
                             }
                             realm.commitTransaction();
@@ -160,11 +177,14 @@ public class FoodTrackerAddFoodActivity extends FemliteBaseActivity {
                                         @Override
                                         public void onPortionSelected(Portion portion) {
                                             // Add to parse and then close the screen
+                                            final ParseUser currentUser = ParseUser.getCurrentUser();
 
                                             ParseObject userWorkoutRelation = new ParseObject("ConsumedFood");
                                             userWorkoutRelation.put("title", portion.getTitle());
                                             userWorkoutRelation.put("calories", portion.getCalories());
                                             userWorkoutRelation.put("consumedOn", new Date(System.currentTimeMillis()));
+                                            userWorkoutRelation.put("user", currentUser);
+
 
                                             userWorkoutRelation.saveInBackground(
                                                     new SaveCallback() {
@@ -197,11 +217,16 @@ public class FoodTrackerAddFoodActivity extends FemliteBaseActivity {
         @Override
         public void onBindFooterViewHolder(ViewHolder holder, int position) {
             super.onBindFooterViewHolder(holder, position);
-            holder.footerTextView.setText("Search for items...");
+            if (realmSearchView != null) {
+                holder.footerTextView.setText("Search for '" + realmSearchView.getSearchBarText() + "'");
+            } else {
+                holder.footerTextView.setText("Search for items...");
+            }
             holder.itemView.setOnClickListener(
                     new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            removeFooter();
                             fetchMore();
                         }
                     }

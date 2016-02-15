@@ -7,6 +7,7 @@ import com.femlite.app.FemliteBaseActivity;
 import com.femlite.app.FemliteDrawerActivity;
 import com.femlite.app.FoodTrackerAddFoodActivity;
 import com.femlite.app.FoodTrackerMainActivity;
+import com.femlite.app.RecipeIdeasActivity;
 import com.femlite.app.WorkoutDetailActivity;
 import com.femlite.app.WorkoutMainActivity;
 import com.femlite.app.views.ExerciseItemView;
@@ -40,6 +41,8 @@ public interface ActivityComponent extends ApplicationComponent {
     void inject(WorkoutDetailActivity workoutDetailActivity);
 
     void inject(ExerciseListActivity exerciseListActivity);
+
+    void inject(RecipeIdeasActivity recipeIdeasActivity);
 
     void inject(ExerciseItemView exerciseItemView);
 }

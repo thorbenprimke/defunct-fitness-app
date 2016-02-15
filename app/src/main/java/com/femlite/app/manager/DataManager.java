@@ -1,6 +1,7 @@
 package com.femlite.app.manager;
 
 import com.femlite.app.model.Exercise;
+import com.femlite.app.model.Recipe;
 import com.femlite.app.model.Workout;
 import com.parse.ParseException;
 
@@ -129,6 +130,40 @@ public class DataManager {
 
                     storageManager.storeExercises(exercises);
                     subscriber.onNext(true);
+                    subscriber.onCompleted();
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(onNext, onError);
+    }
+
+    public Subscription getRecipes(
+            Action1<List<Recipe>> onNext,
+            Action1<Throwable> onError) {
+        return Observable
+                .create((Observable.OnSubscribe<List<Recipe>>) subscriber -> {
+//                    if (storageManager.hasExercises(workoutKey)) {
+//                        subscriber.onNext(true);
+//                        subscriber.onCompleted();
+//                        return;
+//                    }
+
+                    List<Recipe> recipes = null;
+                    try {
+                        recipes = networkRequestManager.fetchRecipes();
+                    } catch (ParseException e) {
+                        subscriber.onError(e);
+                    }
+
+                    if (recipes == null) {
+                        subscriber.onNext(null);
+                        subscriber.onCompleted();
+                        return;
+                    }
+
+//                    storageManager.storeExercises(recipes);
+//                    subscriber.onNext(true);
+                    subscriber.onNext(recipes);
                     subscriber.onCompleted();
                 })
                 .subscribeOn(Schedulers.io())

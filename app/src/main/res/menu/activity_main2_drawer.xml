@@ -6,6 +6,27 @@
             android:id="@+id/nav_workout"
             android:icon="@drawable/ic_menu_camera"
             android:title="Workout" />
+
+        <item
+            android:id="@+id/nav_workout_planner"
+            android:icon="@drawable/ic_menu_share"
+            android:title="Workout Planner" />
+
+        <item
+            android:id="@+id/nav_recipe_list"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Recipe List" />
+
+        <item
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Profile" />
+
+        <item
+            android:id="@+id/nav_people_search"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="People Search" />
+
         <item
             android:id="@+id/nav_calorie_tracker"
             android:icon="@drawable/ic_menu_gallery"

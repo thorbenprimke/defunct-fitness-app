@@ -9,16 +9,46 @@
     tools:showIn="@layout/activity_calorie_tracker_overview"
     android:orientation="vertical">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/food_tracker_main_title_before"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Before"
+            android:visibility="gone"
+            />
+
+        <TextView
+            android:id="@+id/food_tracker_main_title_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_vertical"
+            android:textSize="18dp"
+            />
+
+        <Button
+            android:id="@+id/food_tracker_main_title_after"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="After"
+            android:visibility="gone"
+            />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#000"/>
+
     <com.antonyt.infiniteviewpager.InfiniteViewPager
         android:id="@+id/day_infinite_pager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"/>
-
-    <Button
-        android:id="@+id/food_tracker_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/food_tracker_main_add_food"
-        />
 </LinearLayout>

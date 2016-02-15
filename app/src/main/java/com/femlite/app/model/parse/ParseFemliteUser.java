@@ -14,4 +14,6 @@ public class ParseFemliteUser extends ParseUser implements User {
     public String getName() {
         return getString("name");
     }
+
+
 }
